@@ -17,3 +17,4 @@
       avião)
 - [ ] relógio universal
 - [ ] cálculo de prazos finais (pagamentos, etc...)
+- [ ] cálculo de idades
