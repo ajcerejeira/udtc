@@ -7,5 +7,5 @@ public interface IChronometer {
     public void stop();
     public void pause();
     public void resume();
-    public Duration getCurrentTime();
+    public Duration getElapsedTime();
 }
