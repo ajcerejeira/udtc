@@ -1,34 +1,31 @@
 package View;
 
-import java.util.Optional;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Menu {
-    private String[] options;
-
-    public Menu(String[] options) {
-        this.options = options.clone();
-    }
-
-    public void print() {
+    public static void run(String[] options, Consumer<Void>... actions) {
+        // Print menu options
         for (int i = 0; i < options.length; i++) {
             System.out.println(" [" + i + "] " + options[i]);
         }
-    }
 
-    public Optional<Integer> getOption() {
+        // Read user input
         Scanner sc = new Scanner(System.in);
-        Optional<Integer> option = Optional.empty();
+        int i = -1;
 
         if (sc.hasNextInt()) {
-            Integer i = sc.nextInt();
+            i = sc.nextInt();
 
-            if (i >= 0 && i < options.length) {
-                option = Optional.of(i);
+            if (i < 0 || i < options.length) {
+                // throw invalidinput
             }
+
+        } else {
+            // thro invalidinput
         }
 
-        return option;
+        // Apply action
+        actions[i].accept(null);
     }
-
 }

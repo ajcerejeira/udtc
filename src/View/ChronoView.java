@@ -46,21 +46,8 @@ public class ChronoView implements View {
     }
 
     public void run() {
-        Menu menu = new Menu(new String[] {"Start", "Stop"});
-
-        menu.print();
-        Optional<Integer> option = menu.getOption();
-
-        switch (option.get()) {
-            case 0:
-                // voltar?
-                break;
-            case 1:
-                // start
-                break;
-            case 2:
-                // stop;
-                break;
-        }
+        Menu.run(new String[] { "Start", "Stop" },
+                 x -> out.println("Chronometer has started"),
+                 x -> out.println("Chronometer has stopped"));
     }
 }
