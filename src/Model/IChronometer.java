@@ -2,5 +2,5 @@ package Model;
 
 public interface IChronometer {
 
-    public void start();
+    public void printMenu();
 }
