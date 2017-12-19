@@ -5,4 +5,9 @@ public class Chronometer implements IChronometer {
     public void start() {
         System.out.println("teste");
     }
+
+    public double getRuntime(){
+        return 0.0;
+    }
+
 }
