@@ -3,6 +3,9 @@ package View;
 import Exceptions.InvalidInputException;
 import Exceptions.ReturnException;
 import Utils.Input.InputHandler;
+
+import java.util.Optional;
+
 import static java.lang.System.out;
 
 public class ChronoView implements View {
@@ -40,5 +43,24 @@ public class ChronoView implements View {
 
     private void start() {
         out.println("Chronometer has started!");
+    }
+
+    public void run() {
+        Menu menu = new Menu(new String[] {"Start", "Stop"});
+
+        menu.print();
+        Optional<Integer> option = menu.getOption();
+
+        switch (option.get()) {
+            case 0:
+                // voltar?
+                break;
+            case 1:
+                // start
+                break;
+            case 2:
+                // stop;
+                break;
+        }
     }
 }
