@@ -1,24 +1,17 @@
 package View;
 
 import Exceptions.InvalidInputException;
+import Model.Chronometer;
 
 import static java.lang.System.out;
 
 public class ChronoView implements View {
-    private void stop() {
-        out.println("Chronometer has stopped!");
-    }
-
-    private void start() {
-        out.println("Chronometer has started!");
-    }
-
     @Override
     public void run(Object o) {
         Menu menu = new Menu(new Option[] {
                 new Option("Voltar", x -> System.exit(1)),
-                new Option("Start", chronometer -> start()),
-                new Option("Stop", chronometer -> stop()),
+                new Option("Start", chronometer -> ((Chronometer) o).startChronometer()),
+                new Option("Stop", chronometer -> ((Chronometer) o).stopChronometer())
         });
 
         try {

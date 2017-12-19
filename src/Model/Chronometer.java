@@ -7,6 +7,7 @@ import Utils.Input.InputHandler;
 import static java.lang.System.out;
 
 public class Chronometer implements IChronometer {
+    Thread thread = null;
     private double runTime;
     private LocalDateTime start;
     private LocalDateTime stop;
@@ -40,24 +41,20 @@ public class Chronometer implements IChronometer {
     }
 
     @Override
-    public void run() {
-        Thread thread = new Thread(() -> {
+    public void startChronometer() {
+        start();
+        thread = new Thread(() -> {
             while(true){
                 update();
             }
         });
         thread.start();
-        try {
-            int i = InputHandler.readInteger();
-            if(i==1){
-                thread.interrupt();
-                stop();
-                out.println(getRuntime());
-            }
-        } catch (ReturnException e) {
-            e.printStackTrace();
-        } catch (InvalidInputException e) {
-            e.printStackTrace();
-        }
+    }
+
+    @Override
+    public void stopChronometer() {
+        thread.interrupt();
+        stop();
+        out.println(getRuntime());
     }
 }
