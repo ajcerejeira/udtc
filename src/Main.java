@@ -9,13 +9,5 @@ public class Main {
         Chronometer c = new Chronometer();
         View v = new ChronoView();
         v.run(c);
-     /*   View v = new ChronoView();
-        try {
-            v.printMenu();
-        } catch (InvalidInputException e) {
-            out.println("Invalid input!");
-        } catch (ReturnException e) {
-            out.println("Return to previous menu detected!");
-        }*/
     }
 }
