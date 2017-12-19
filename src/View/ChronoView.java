@@ -8,6 +8,8 @@ import static java.lang.System.out;
 public class ChronoView implements View {
     @Override
     public void printMenu() throws InvalidInputException, ReturnException {
+        printIntro();
+        out.print("Choice: ");
         int input = InputHandler.readInteger();
         switch (input){
             case 1:
@@ -17,6 +19,19 @@ public class ChronoView implements View {
                 stop();
                 break;
         }
+    }
+
+    private void printIntro() {
+        out.println("      _____________________________________CHRONOMETER___________________________________");
+        out.println("     /                                                                                   \\");
+        out.println("     | ----------------------------------------------------------------------------------|");
+        out.println("     | 1 - START                                                                         |");
+        out.println("     | ----------------------------------------------------------------------------------|");
+        out.println("     | 2 - STOP                                                                          |");
+        out.println("     | ----------------------------------------------------------------------------------|");
+        out.println("     | 3 - '<-' RETURN                                                                   |");
+        out.println("     | ----------------------------------------------------------------------------------|");
+        out.println("     \\___________________________________________________________________________________/\n");
     }
 
     private void stop() {
