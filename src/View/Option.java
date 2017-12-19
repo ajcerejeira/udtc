@@ -2,11 +2,11 @@ package View;
 
 import java.util.function.Consumer;
 
-public class Option {
+public class Option<T> {
     private String name;
-    private Consumer<Object> action;
+    private Consumer<T> action;
 
-    public Option(String name, Consumer<Object> action) {
+    public Option(String name, Consumer<T> action) {
         this.name = name;
         this.action = action;
     }
@@ -15,7 +15,7 @@ public class Option {
         return this.name;
     }
 
-    public Consumer<Object> getAction() {
+    public Consumer<T> getAction() {
         return this.action;
     }
 

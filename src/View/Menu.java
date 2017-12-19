@@ -1,7 +1,5 @@
 package View;
 
-import Exceptions.InvalidInputException;
-
 import java.util.Scanner;
 
 public class Menu {
@@ -11,24 +9,29 @@ public class Menu {
         this.options = options.clone();
     }
 
-    public void run(Object o) throws InvalidInputException {
-        System.out.println(this);
+    public void run(Object o) {
+        int option = -1;
 
-        // Read user option
-        Scanner sc = new Scanner(System.in);
-        int i = -1;
+        do {
+            System.out.println(this);
 
-        if (sc.hasNextInt()) {
-            i = sc.nextInt();
+            // Read user option
+            Scanner sc = new Scanner(System.in);
 
-            if (i < 0 || i > this.options.length) {
-                throw new InvalidInputException();
+            if (sc.hasNextInt()) {
+                option = sc.nextInt();
+
+                if (option < 0 || option > this.options.length) {
+                    option = -1;
+                }
             }
-        } else {
-            throw new InvalidInputException();
-        }
 
-        this.options[i].getAction().accept(o);
+            if (option == -1) {
+                System.out.println("A opção escolhida é inválida. Por favor tente outra vez");
+            } else {
+                this.options[option].getAction().accept(o);
+            }
+        } while(option != 0);
     }
 
     public String toString() {
