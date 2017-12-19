@@ -11,13 +11,12 @@ public class Chronometer implements IChronometer {
     private double runTime;
     private LocalDateTime start;
     private LocalDateTime stop;
+    private LocalDateTime pause;
+    private LocalDateTime resume;
 
     public Chronometer(){
-    }
-
-    @Override
-    public void start() {
-        this.start=LocalDateTime.now();
+        this.resume=LocalDateTime.MIN;
+        this.pause=LocalDateTime.MIN;
     }
 
     @Override
@@ -26,24 +25,23 @@ public class Chronometer implements IChronometer {
     }
 
     @Override
-    public void resume() {
-
+    public void pause() {
+        this.pause=LocalDateTime.now();
     }
 
     @Override
-    public void stop() {
-        this.stop=LocalDateTime.now();
+    public void resume() {
+        this.resume=LocalDateTime.now();
     }
 
     @Override
     public String getRuntime() {
-        return Duration.between(start,stop).toString();
+        return Duration.between(start,stop).minus(Duration.between(pause,resume)).toString();
     }
 
     @Override
-    public void startChronometer() {
-        out.println("Started chronometer");
-        start();
+    public void start() {
+        this.start=LocalDateTime.now();
         thread = new Thread(() -> {
             while(true){
                 update();
@@ -53,10 +51,11 @@ public class Chronometer implements IChronometer {
     }
 
     @Override
-    public void stopChronometer() {
-        out.println("Stopped chronometer");
+    public void stop() {
         thread.interrupt();
-        stop();
+        this.stop=LocalDateTime.now();
         out.println(getRuntime());
+        this.resume=LocalDateTime.MIN;
+        this.pause=LocalDateTime.MIN;
     }
 }
