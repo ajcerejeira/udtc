@@ -42,6 +42,7 @@ public class Chronometer implements IChronometer {
 
     @Override
     public void startChronometer() {
+        out.println("Started chronometer");
         start();
         thread = new Thread(() -> {
             while(true){
@@ -53,6 +54,7 @@ public class Chronometer implements IChronometer {
 
     @Override
     public void stopChronometer() {
+        out.println("Stopped chronometer");
         thread.interrupt();
         stop();
         out.println(getRuntime());
