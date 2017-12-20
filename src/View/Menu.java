@@ -1,5 +1,7 @@
 package View;
 
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Menu implements Runnable {
@@ -11,47 +13,32 @@ public class Menu implements Runnable {
 
     @Override
     public void run() {
-        int option = -1;
-
         System.out.println(this);
 
         // Read user option
-        Scanner sc = new Scanner(System.in);
+        final int number = new Scanner(System.in).nextInt();
 
-        if (sc.hasNextInt()) {
-            option = sc.nextInt();
+        Optional<Option> option = Arrays.
+                stream(this.options).
+                filter(op -> op.getNumber() == number).
+                findFirst();
 
-            if (option < 0 || option > this.options.length) {
-                option = -1;
-            }
-        }
-
-        if (option == -1) {
-            System.out.println("A opção escolhida é inválida. Por favor tente outra vez");
-            this.run();
+        if (option.isPresent()) {
+            option.get().run();
         } else {
-            this.options[option].run();
+            System.out.println("A opção escolhida não é válida. Tente novamente");
+            this.run();
         }
     }
 
     public String toString() {
-        StringBuilder str = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
-        str.append('\n');
-
-        for (int i = 1; i < this.options.length; i++) {
-            str.append(" [");
-            str.append(i);
-            str.append("] ");
-            str.append(this.options[i]);
-            str.append('\n');
+        for (Option option : this.options) {
+            builder.append(option.toString());
+            builder.append('\n');
         }
 
-        str.append('\n');
-        str.append(" [0] ");
-        str.append(this.options[0]);
-        str.append('\n');
-
-        return str.toString();
+        return builder.toString();
     }
 }

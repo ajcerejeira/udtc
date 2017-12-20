@@ -1,12 +1,18 @@
 package View;
 
 public class Option implements Runnable {
+    private int number;
     private String name;
     private Runnable action;
 
-    public Option(String name, Runnable action) {
+    public Option(int number, String name, Runnable action) {
+        this.number = number;
         this.name = name;
         this.action = action;
+    }
+
+    public int getNumber() {
+        return this.number;
     }
 
     public String getName() {
@@ -23,6 +29,6 @@ public class Option implements Runnable {
     }
 
     public String toString() {
-        return this.name;
+        return "[" + this.number + "] " + this.name;
     }
 }
