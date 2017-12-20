@@ -1,10 +1,6 @@
 package Model;
 
-import Exceptions.*;
 import java.time.*;
-import Utils.Input.InputHandler;
-
-import static java.lang.System.out;
 
 public class Chronometer implements IChronometer {
     Thread thread = null;
@@ -22,6 +18,12 @@ public class Chronometer implements IChronometer {
     @Override
     public void update() {
         this.stop=LocalDateTime.now();
+    }
+
+    @Override
+    public void reset() {
+        this.resume=LocalDateTime.MIN;
+        this.pause=LocalDateTime.MIN;
     }
 
     @Override
@@ -54,7 +56,5 @@ public class Chronometer implements IChronometer {
     public void stop() {
         thread.interrupt();
         this.stop=LocalDateTime.now();
-        this.resume=LocalDateTime.MIN;
-        this.pause=LocalDateTime.MIN;
     }
 }

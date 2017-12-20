@@ -3,6 +3,7 @@ package View;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Scanner;
+import static java.lang.System.out;
 
 public class Menu implements Runnable {
     private Option[] options;
@@ -16,6 +17,7 @@ public class Menu implements Runnable {
         System.out.println(this);
 
         // Read user option
+        out.print("Choice: ");
         final int number = new Scanner(System.in).nextInt();
 
         Optional<Option> option = Arrays.
@@ -26,7 +28,7 @@ public class Menu implements Runnable {
         if (option.isPresent()) {
             option.get().run();
         } else {
-            System.out.println("A opção escolhida não é válida. Tente novamente");
+            out.println("Invalid choice.");
             this.run();
         }
     }
@@ -38,7 +40,6 @@ public class Menu implements Runnable {
             builder.append(option.toString());
             builder.append('\n');
         }
-
         return builder.toString();
     }
 }

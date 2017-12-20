@@ -8,5 +8,6 @@ public interface IChronometer {
     public void pause();
     public void resume();
     public void update();
+    public void reset();
     public String getRuntime();
 }
