@@ -54,7 +54,6 @@ public class Chronometer implements IChronometer {
     public void stop() {
         thread.interrupt();
         this.stop=LocalDateTime.now();
-        out.println(getRuntime());
         this.resume=LocalDateTime.MIN;
         this.pause=LocalDateTime.MIN;
     }

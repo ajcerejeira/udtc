@@ -2,40 +2,42 @@ package View;
 
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Runnable {
     private Option[] options;
 
     public Menu(Option[] options) {
         this.options = options.clone();
     }
 
-    public void run(Object o) {
+    @Override
+    public void run() {
         int option = -1;
 
-        do {
-            System.out.println(this);
+        System.out.println(this);
 
-            // Read user option
-            Scanner sc = new Scanner(System.in);
+        // Read user option
+        Scanner sc = new Scanner(System.in);
 
-            if (sc.hasNextInt()) {
-                option = sc.nextInt();
+        if (sc.hasNextInt()) {
+            option = sc.nextInt();
 
-                if (option < 0 || option > this.options.length) {
-                    option = -1;
-                }
+            if (option < 0 || option > this.options.length) {
+                option = -1;
             }
+        }
 
-            if (option == -1) {
-                System.out.println("A opção escolhida é inválida. Por favor tente outra vez");
-            } else {
-                this.options[option].getAction().accept(o);
-            }
-        } while(option != 0);
+        if (option == -1) {
+            System.out.println("A opção escolhida é inválida. Por favor tente outra vez");
+            this.run();
+        } else {
+            this.options[option].run();
+        }
     }
 
     public String toString() {
         StringBuilder str = new StringBuilder();
+
+        str.append('\n');
 
         for (int i = 1; i < this.options.length; i++) {
             str.append(" [");

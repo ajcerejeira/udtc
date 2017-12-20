@@ -1,12 +1,10 @@
 package View;
 
-import java.util.function.Consumer;
-
-public class Option<T> {
+public class Option implements Runnable {
     private String name;
-    private Consumer<T> action;
+    private Runnable action;
 
-    public Option(String name, Consumer<T> action) {
+    public Option(String name, Runnable action) {
         this.name = name;
         this.action = action;
     }
@@ -15,8 +13,13 @@ public class Option<T> {
         return this.name;
     }
 
-    public Consumer<T> getAction() {
+    public Runnable getAction() {
         return this.action;
+    }
+
+    @Override
+    public void run() {
+        this.action.run();
     }
 
     public String toString() {
