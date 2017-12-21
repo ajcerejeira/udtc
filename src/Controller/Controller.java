@@ -1,26 +1,21 @@
 package Controller;
 
 import Model.Chronometer;
+import View.NotebookView;
 import View.ChronoView;
+import View.Menu;
+import View.Option;
 
-import java.util.Scanner;
-import static java.lang.System.out;
 
 public class Controller implements Runnable{
 
     @Override
     public void run(){
-        Scanner s = new Scanner(System.in);
+        Menu menu = new Menu(new Option[] {
+                new Option("Chronometer", () -> new ChronoView(new Chronometer()).run()),
+                new Option("Notebook", () -> new NotebookView().run())
 
-        switch (s.nextInt()){
-            case 1:
-                ChronoView c =  new ChronoView(new Chronometer());
-                c.run();
-                break;
-            case 2:
-                break;
-            default:
-                break;
-        }
+        });
+        menu.run();
     }
 }
