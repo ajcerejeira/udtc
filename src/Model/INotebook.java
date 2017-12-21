@@ -1,8 +1,12 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface INotebook {
-    void addAppointment(LocalDateTime date, String text);
-    void removeAppointment(LocalDateTime date, String text);
+    void addAppointment(Appointment appointment);
+    void removeAppointment(Appointment appointment);
+
+    List<Appointment> getAppointments();
+    List<Appointment> getAppointments(LocalDateTime date);
 }

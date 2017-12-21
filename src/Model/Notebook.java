@@ -3,28 +3,36 @@ package Model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Notebook implements INotebook {
-    private Map<LocalDateTime, List<String>> appointments;
+    private List<Appointment> appointments;
 
     public Notebook() {
-        this.appointments = new TreeMap<>();
+        this.appointments = new ArrayList<>();
+    }
+
+
+    @Override
+    public void addAppointment(Appointment appointment) {
+        this.appointments.add(appointment);
     }
 
     @Override
-    public void addAppointment(LocalDateTime date, String text) {
-        if (this.appointments.containsKey(date))  {
-            this.appointments.get(date).add(text);
-        } else {
-            this.appointments.put(date, new ArrayList<>());
-            this.appointments.get(date).add(text);
-        }
+    public void removeAppointment(Appointment appointment) {
+        this.appointments.remove(appointment);
     }
 
     @Override
-    public void removeAppointment(LocalDateTime date, String text) {
-        this.appointments.get(date).remove(text);
+    public List<Appointment> getAppointments() {
+        return this.appointments;
+    }
+
+    @Override
+    public List<Appointment> getAppointments(LocalDateTime date) {
+        return this.appointments
+                .stream()
+                .filter(appointment -> appointment.getDate().equals(date))
+                .collect(Collectors.toList());
     }
 }
