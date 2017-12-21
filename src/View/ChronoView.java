@@ -1,6 +1,7 @@
 package View;
 
 import Model.Chronometer;
+import static java.lang.System.out;
 
 public class ChronoView implements Runnable {
     private Chronometer chronometer;
@@ -14,37 +15,48 @@ public class ChronoView implements Runnable {
     }
 
     private void start() {
-        System.out.println("Iniciando o cronómetro");
+        out.println("Initializing Chronometer.");
         chronometer.start();
 
         Menu menu = new Menu(new Option[] {
-                new Option("Pause", this::pause),
-                new Option("Stop", this::stop),
+                new Option(1,"Pause", this::pause),
+                new Option(2,"Stop", this::stop)
         });
-
         menu.run();
     }
 
     private void stop() {
+        out.println("Stopping Chronometer.");
         chronometer.stop();
-        System.out.println(chronometer.getRuntime());
+        out.println("Runtime: " + chronometer.getRuntime().replace("PT",""));
+        chronometer.reset();
         this.run();
     }
 
     private void pause() {
+        out.println("Chronometer has paused.");
         chronometer.pause();
+        Menu menu = new Menu(new Option[] {
+                new Option(1,"Resume", this::resume)
+        });
+        menu.run();
     }
 
     private void resume() {
+        out.println("Chronometer has resumed.");
         chronometer.resume();
+        Menu menu = new Menu(new Option[] {
+                new Option(1,"Pause", this::pause),
+                new Option(2,"Stop", this::stop)
+        });
+        menu.run();
     }
 
     @Override
     public void run() {
         Menu menu = new Menu(new Option[] {
-                new Option("Start", this::start),
-                new Option("Return", () -> System.exit(0)),
-
+                new Option(1,"Start", this::start),
+                new Option(0,"Return", () -> System.exit(0))
         });
         menu.run();
     }
