@@ -1,12 +1,13 @@
 package View;
 
-import Model.Appointment;
-import Model.Notebook;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import Model.Appointment;
+import Model.Notebook;
+import Utils.Input.DateParser;
 
 public class NotebookView implements Runnable {
     private Notebook notebook;
@@ -16,13 +17,15 @@ public class NotebookView implements Runnable {
     }
 
     private void addAppointment() {
-        System.out.println("Date:");
-        // TODO: read date from input
-        System.out.println("Appointment:");
         Scanner sc = new Scanner(System.in);
+
+        System.out.println("Date:");
+        LocalDateTime date = DateParser.parseDate(sc.nextLine());
+
+        System.out.println("Appointment:");
         String text = sc.nextLine();
 
-        this.notebook.addAppointment(new Appointment(LocalDateTime.now(), text));
+        this.notebook.addAppointment(new Appointment(date, text));
 
         this.run();
     }
@@ -53,6 +56,7 @@ public class NotebookView implements Runnable {
 
     @Override
     public void run() {
+        System.out.println(this);
         List<Option> options = new ArrayList<>();
 
         // Add all the apointments as menu items
@@ -63,7 +67,8 @@ public class NotebookView implements Runnable {
 
         // Add the default commands
         options.add(new Option());
-        options.add(new Option("A", "Add appointment", this::addAppointment));
+        options.add(new Option("Add appointment", this::addAppointment));
+        options.add(new Option("Return", () -> System.out.println()));
 
         Menu menu = new Menu(options.toArray(new Option[options.size()]));
         menu.run();
@@ -71,14 +76,8 @@ public class NotebookView implements Runnable {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-
-        for (int i = 0; i < this.notebook.getAppointments().size(); i++) {
-            builder.append("["); builder.append(i); builder.append("] ");
-            builder.append(this.notebook.getAppointments().get(i));
-            builder.append("\n");
-        }
-
-        return builder.toString();
+        return "------------------------------------------------------------\n"
+                + "Notebook\n"
+                + "------------------------------------------------------------";
     }
 }

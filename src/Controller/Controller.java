@@ -14,8 +14,9 @@ public class Controller implements Runnable{
         Menu menu = new Menu(new Option[] {
                 new Option("Chronometer", () -> new ChronoView(new Chronometer()).run()),
                 new Option("Notebook", () -> new NotebookView().run())
-
         });
-        menu.run();
+
+        while (true)
+            menu.run();
     }
 }
