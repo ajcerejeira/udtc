@@ -16,12 +16,12 @@ public class Menu implements Runnable {
         System.out.println(this);
 
         // Read user option
-        final int number = new Scanner(System.in).nextInt();
+        final String command = new Scanner(System.in).nextLine();
 
-        Optional<Option> option = Arrays.
-                stream(this.options).
-                filter(op -> op.getNumber() == number).
-                findFirst();
+        Optional<Option> option = Arrays
+                .stream(this.options)
+                .filter(o -> o.getCommand().equals(command))
+                .findFirst();
 
         if (option.isPresent()) {
             option.get().run();
@@ -32,7 +32,7 @@ public class Menu implements Runnable {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder().append('\n');
 
         for (Option option : this.options) {
             builder.append(option.toString());

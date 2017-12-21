@@ -1,18 +1,30 @@
 package View;
 
 public class Option implements Runnable {
-    private int number;
+    private String command;
     private String name;
     private Runnable action;
 
-    public Option(int number, String name, Runnable action) {
-        this.number = number;
+    public Option() {
+        this.command = "";
+        this.name = "";
+        this.action = null;
+    }
+
+    public Option(String command, String name, Runnable action) {
+        this.command = command;
         this.name = name;
         this.action = action;
     }
 
-    public int getNumber() {
-        return this.number;
+    public Option(String name, Runnable action) {
+        this.command = String.valueOf(name.charAt(0));
+        this.name = name;
+        this.action = action;
+    }
+
+    public String getCommand() {
+        return this.command;
     }
 
     public String getName() {
@@ -23,12 +35,20 @@ public class Option implements Runnable {
         return this.action;
     }
 
+    public boolean isEmpty() {
+        return this.command.isEmpty();
+    }
+
     @Override
     public void run() {
         this.action.run();
     }
 
     public String toString() {
-        return "[" + this.number + "] " + this.name;
+        if (this.command.isEmpty()) {
+            return "";
+        } else {
+            return "[" + this.command + "] " + this.name;
+        }
     }
 }

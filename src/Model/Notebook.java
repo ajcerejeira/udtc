@@ -19,6 +19,11 @@ public class Notebook implements INotebook {
     }
 
     @Override
+    public void removeAppointment(int index) {
+        this.appointments.remove(index);
+    }
+
+    @Override
     public void removeAppointment(Appointment appointment) {
         this.appointments.remove(appointment);
     }

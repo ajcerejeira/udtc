@@ -18,8 +18,8 @@ public class ChronoView implements Runnable {
         chronometer.start();
 
         Menu menu = new Menu(new Option[] {
-                new Option(1,"Pause", this::pause),
-                new Option(2,"Stop", this::stop),
+                new Option("Pause", this::pause),
+                new Option("Stop", this::stop),
         });
 
         menu.run();
@@ -42,8 +42,8 @@ public class ChronoView implements Runnable {
     @Override
     public void run() {
         Menu menu = new Menu(new Option[] {
-                new Option(1,"Start", this::start),
-                new Option(0,"Voltar", () -> System.exit(0)),
+                new Option("Start", this::start),
+                new Option("Return", () -> System.exit(0)),
 
         });
         menu.run();
