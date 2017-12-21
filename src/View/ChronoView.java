@@ -56,7 +56,7 @@ public class ChronoView implements Runnable {
     public void run() {
         Menu menu = new Menu(new Option[] {
                 new Option("Start", this::start),
-                new Option("Return", () -> System.exit(0))
+                new Option("Return", () -> System.out.println())
         });
         menu.run();
     }

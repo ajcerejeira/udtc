@@ -14,7 +14,6 @@ public class Notebook implements INotebook {
         this.appointments = new TreeSet<>();
     }
 
-
     @Override
     public void addAppointment(Appointment appointment) {
         this.appointments.add(appointment);
