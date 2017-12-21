@@ -3,13 +3,15 @@ package Model;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class Notebook implements INotebook {
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments;
 
     public Notebook() {
-        this.appointments = new ArrayList<>();
+        this.appointments = new TreeSet<>();
     }
 
 
@@ -19,18 +21,13 @@ public class Notebook implements INotebook {
     }
 
     @Override
-    public void removeAppointment(int index) {
-        this.appointments.remove(index);
-    }
-
-    @Override
-    public void removeAppointment(Appointment appointment) {
+    public void deleteAppointment(Appointment appointment) {
         this.appointments.remove(appointment);
     }
 
     @Override
     public List<Appointment> getAppointments() {
-        return this.appointments;
+        return new ArrayList<>(this.appointments);
     }
 
     @Override

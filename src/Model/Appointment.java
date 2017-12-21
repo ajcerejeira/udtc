@@ -3,7 +3,7 @@ package Model;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Appointment {
+public class Appointment implements Comparable {
     private LocalDateTime date;
     private String text;
 
@@ -31,6 +31,12 @@ public class Appointment {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Appointment appointment = (Appointment) o;
+        return this.date.compareTo(appointment.getDate());
     }
 
     @Override

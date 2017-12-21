@@ -31,8 +31,8 @@ public class NotebookView implements Runnable {
         System.out.println("Are you sure you want to remove the appointment?");
 
         Menu menu = new Menu(new Option[] {
-                new Option("Yes", () -> this.notebook.removeAppointment(appointment)),
-                new Option("No", () -> this.run()),
+                new Option("Yes", () -> this.notebook.deleteAppointment(appointment)),
+                new Option("No", this::run),
         });
         menu.run();
 

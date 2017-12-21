@@ -44,6 +44,7 @@ public class Option implements Runnable {
         this.action.run();
     }
 
+    @Override
     public String toString() {
         if (this.command.isEmpty()) {
             return "";
