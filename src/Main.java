@@ -1,10 +1,8 @@
-import Model.Chronometer;
-import View.*;
+import Controller.Controller;
 
 public class Main {
-
-    public static void main(String[] args) {
-        Runnable v = new ChronoView(new Chronometer());
-        v.run();
+    public static void main(String[] args){
+        Controller c = new Controller();
+        c.run();
     }
 }
