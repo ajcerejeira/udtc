@@ -2,6 +2,7 @@ package Model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 
 public class Travel {
@@ -51,6 +52,10 @@ public class Travel {
         return departureDate;
     }
 
+    public LocalDateTime getTimeAtArrival(){
+        return LocalDateTime.from(this.departureDate.plus(this.duration).atZone(ZoneId.of(destination)));
+    }
+
     public double getCost() {
         return cost;
     }
@@ -63,7 +68,7 @@ public class Travel {
         this.destination = destination;
     }
 
-    public void setPrice(Duration duration) {
+    public void setDuration(Duration duration) {
         this.duration = duration;
     }
 
