@@ -1,13 +1,9 @@
 package View;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 import Model.Appointment;
 import Model.Notebook;
-import Utils.Input.DateParser;
+
+import Utils.UI.*;
 
 public class NotebookView implements Runnable {
     private Notebook notebook;
@@ -17,67 +13,48 @@ public class NotebookView implements Runnable {
     }
 
     private void addAppointment() {
-        Scanner sc = new Scanner(System.in);
+        Appointment appointment = new Appointment();
 
-        System.out.println("Date:");
-        LocalDateTime date = DateParser.parseDate(sc.nextLine());
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Title("Add appointment", 2),
+                new Table(this.notebook.getAppointments().toArray()),
+                new Input("Date [dd-mm-yyy]", text -> System.out.println()),
+                new Input("Appointment", appointment::setText),
+        }).run();
 
-        System.out.println("Appointment:");
-        String text = sc.nextLine();
-
-        this.notebook.addAppointment(new Appointment(date, text));
-
+        this.notebook.addAppointment(appointment);
         this.run();
     }
 
-    private void deleteAppointment(Appointment appointment) {
-        System.out.println("Are you sure you want to remove the appointment?");
-
-        Menu menu = new Menu(new Option[] {
-                new Option("Yes", () -> this.notebook.deleteAppointment(appointment)),
-                new Option("No", this::run),
-        });
-        menu.run();
-
-        this.run();
+    private void editAppointment() {
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Title("Edit appointment",2),
+                new Table(this.notebook.getAppointments().toArray()),
+        }).run();
     }
 
-    private void showAppointment(Appointment appointment) {
-        System.out.println(appointment);
-
-        Menu menu = new Menu(new Option[] {
-                new Option("Edit appointment", () -> System.out.println("EDIT")),
-                new Option("Delete appointment", () -> deleteAppointment(appointment)),
-        });
-        menu.run();
-
-        this.run();
+    private void deleteAppointment() {
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Title("Delete appointment",2),
+                new Table(this.notebook.getAppointments().toArray()),
+        }).run();
     }
 
     @Override
     public void run() {
-        System.out.println(this);
-        List<Option> options = new ArrayList<>();
-
-        // Add all the apointments as menu items
-        for (int i = 0; i < this.notebook.getAppointments().size(); i++) {
-            Appointment appointment = this.notebook.getAppointments().get(i);
-            options.add(new Option(String.valueOf(i), appointment.toString(), () -> showAppointment(appointment)));
-        }
-
-        // Add the default commands
-        options.add(new Option());
-        options.add(new Option("Add appointment", this::addAppointment));
-        options.add(new Option("Return", () -> System.out.println()));
-
-        Menu menu = new Menu(options.toArray(new Option[options.size()]));
-        menu.run();
-    }
-
-    @Override
-    public String toString() {
-        return "------------------------------------------------------------\n"
-                + "Notebook\n"
-                + "------------------------------------------------------------";
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Table(this.notebook.getAppointments().toArray()),
+                new Menu(new Option[] {
+                        new Option("A", "Add appointment", this::addAppointment),
+                        new Option("E", "Edit appointment", this::editAppointment),
+                        new Option("D", "Delete appointment", this::deleteAppointment),
+                        new Option("S", "Search", this::addAppointment),
+                        new Option("B", "Back", this::addAppointment)
+                }),
+        }).run();
     }
 }
