@@ -6,7 +6,6 @@ import Utils.UI.Menu;
 import Utils.UI.Option;
 import View.*;
 
-
 public class Controller implements Runnable{
     private Chronometer chronometer;
     private Notebook notebook;
