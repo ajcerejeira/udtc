@@ -8,8 +8,8 @@ import Utils.UI.*;
 public class NotebookView implements Runnable {
     private Notebook notebook;
 
-    public NotebookView() {
-        this.notebook = new Notebook();
+    public NotebookView(Notebook notebook) {
+        this.notebook = notebook;
     }
 
     private void addAppointment() {
