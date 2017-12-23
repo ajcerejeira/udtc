@@ -19,7 +19,7 @@ public class NotebookView implements Runnable {
                 new Title("Notebook", 1),
                 new Title("Add appointment", 2),
                 new Table(this.notebook.getAppointments().toArray()),
-                new Input("Date [dd-mm-yyy]", text -> System.out.println()),
+                new Input("Date [dd-mm-yyyy]", text -> System.out.println()),
                 new Input("Appointment", appointment::setText),
         }).run();
 
@@ -33,6 +33,8 @@ public class NotebookView implements Runnable {
                 new Title("Edit appointment",2),
                 new Table(this.notebook.getAppointments().toArray()),
         }).run();
+
+        this.run();
     }
 
     private void deleteAppointment() {
@@ -41,6 +43,18 @@ public class NotebookView implements Runnable {
                 new Title("Delete appointment",2),
                 new Table(this.notebook.getAppointments().toArray()),
         }).run();
+
+        this.run();
+    }
+
+    private void searchAppointment() {
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Title("Search appointment",2),
+                new Table(this.notebook.getAppointments().toArray()),
+        }).run();
+
+        this.run();
     }
 
     @Override
@@ -52,7 +66,7 @@ public class NotebookView implements Runnable {
                         new Option("A", "Add appointment", this::addAppointment),
                         new Option("E", "Edit appointment", this::editAppointment),
                         new Option("D", "Delete appointment", this::deleteAppointment),
-                        new Option("S", "Search", this::addAppointment),
+                        new Option("S", "Search", this::searchAppointment),
                         new Option("B", "Back", this::addAppointment)
                 }),
         }).run();
