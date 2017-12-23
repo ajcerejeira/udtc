@@ -1,27 +1,24 @@
 package Controller;
 
-import Model.Chronometer;
-import Model.DateCalculator;
-import Model.Notebook;
-import Model.Travels;
+import Model.*;
 import Utils.UI.*;
-import View.ChronoView;
-import View.DateView;
-import View.NotebookView;
-import View.TravelView;
-
+import Utils.UI.Menu;
+import Utils.UI.Option;
+import View.*;
 
 public class Controller implements Runnable{
     private Chronometer chronometer;
     private Notebook notebook;
     private DateCalculator dateCalculator;
     private Travels travels;
+    private Calendar calendar;
 
     public Controller() {
         this.chronometer = new Chronometer();
         this.notebook = new Notebook();
         this.dateCalculator = new DateCalculator();
         this.travels = new Travels();
+        this.calendar = new Calendar();
     }
 
     @Override
@@ -36,6 +33,7 @@ public class Controller implements Runnable{
                             new Option("N", "Notebook", new NotebookView(this.notebook)),
                             new Option("T","Traveling", new TravelView(this.travels)),
                             new Option("D","DateTime Calculator", new DateView(this.dateCalculator)),
+                            new Option("CL","Calendar", new CalendarView(this.calendar)),
                             new Option("Q", "Quit", () -> System.exit(-1)),
                     }),
             }).run();
