@@ -70,7 +70,7 @@ public class Travels implements ITravels {
 
     @Override
     public Duration timeUntilLastTravel() {
-        return Duration.between(LocalDateTime.now(), getTravels().get(getTravels().size()).getDepartureDate());
+        return Duration.between(LocalDateTime.now(), getTravels().get(getTravels().size()-1).getDepartureDate());
     }
 
     @Override
