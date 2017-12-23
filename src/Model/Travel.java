@@ -13,7 +13,7 @@ public class Travel {
     public Travel() {
         this.origin = null;
         this.destination = null;
-        this.duration = null;
+        this.duration = Duration.ZERO;
         this.departureDate = null;
         this.cost = 0;
     }
