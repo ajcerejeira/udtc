@@ -5,11 +5,14 @@ import Model.Travels;
 import Utils.Input.DateParser;
 import Utils.Static;
 
+import java.text.DateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import java.util.function.Function;
 
 import static java.lang.System.out;
+import Utils.UI.*;
 
 public class TravelView implements Runnable{
     private Travels travels;
@@ -20,29 +23,45 @@ public class TravelView implements Runnable{
 
     @Override
     public void run() {
-        Menu menu = new Menu(new Option[] {
-                new Option("Add travel", this::add),
-                new Option("Remove travel", this::remove),
-                new Option("Check time at arrival", this::arrivalTime),
-                new Option("L1","List available travels", this::listAll),
-                new Option("L2","List cheapest travels", this::listCheapest),
-                new Option("L3","List most expensive travels", this::listMostExpensive),
-                new Option("L4","List shortest travels", this::listShortest),
-                new Option("L5","List longest travels", this::listLongest),
-                new Option("L6","List travels between two dates", this::listBetweenDates),
-                new Option("T1","Time until next travel", this::listNext),
-                new Option("T2","Time until last travel", this::listLast),
-                new Option("Return", () -> out.println())
-        });
-        menu.run();
+        new UI(new Runnable[] {
+                new Title("Travels", 1),
+                new Menu(new Option[] {
+                        new Option("Add travel", this::add),
+                        new Option("Remove travel", this::remove),
+                        new Option("Check time at arrival", this::arrivalTime),
+                        new Option("L1","List available travels", this::listAll),
+                        new Option("L2","List cheapest travels", this::listCheapest),
+                        new Option("L3","List most expensive travels", this::listMostExpensive),
+                        new Option("L4","List shortest travels", this::listShortest),
+                        new Option("L5","List longest travels", this::listLongest),
+                        new Option("L6","List travels between two dates", this::listBetweenDates),
+                        new Option("T1","Time until next travel", this::listNext),
+                        new Option("T2","Time until last travel", this::listLast),
+                        new Option("Back", () -> out.println())
+                })
+        }).run();
     }
 
     private void add() {
         Travel t = new Travel();
         Duration dur = Duration.ZERO;
-        LocalDateTime dt;
-        Scanner sc = new Scanner(System.in);
 
+        new UI(new Runnable[] {
+                new Title("Travels", 1),
+                new Title("Add travel", 2),
+
+                new Input("Origin", t::setOrigin),
+                new Input("Destination", t::setDestination),
+                new Input("Departura date (YYYY-MM-DD hh:mm:ss)", x -> t.setDepartureDate(DateParser.parseDateTime(x))),
+                new Input("Duration\n Hours", h -> t.setDuration(t.getDuration().plusHours(Integer.valueOf(h)))),
+                new Input(" Minutes", m -> t.setDuration(t.getDuration().plusMinutes(Integer.valueOf(m)))),
+                new Input("Cost", c -> t.setCost(Double.valueOf(c))),
+        }).run();
+
+        this.travels.addTravel(t);
+        this.run();
+
+        /*
         out.print("Origin: ");
         t.setOrigin(sc.nextLine());
         out.print("Destination: ");
@@ -60,7 +79,7 @@ public class TravelView implements Runnable{
 
         this.travels.addTravel(t);
         out.println("Successfully added a new Travel");
-        this.run();
+        this.run();*/
     }
 
     private void remove() {

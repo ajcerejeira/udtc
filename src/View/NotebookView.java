@@ -67,7 +67,7 @@ public class NotebookView implements Runnable {
                         new Option("E", "Edit appointment", this::editAppointment),
                         new Option("D", "Delete appointment", this::deleteAppointment),
                         new Option("S", "Search", this::searchAppointment),
-                        new Option("B", "Back", this::addAppointment)
+                        new Option("B", "Back", () -> System.out.print(""))
                 }),
         }).run();
     }
