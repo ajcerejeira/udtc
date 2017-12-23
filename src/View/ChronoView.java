@@ -6,10 +6,6 @@ import static java.lang.System.out;
 public class ChronoView implements Runnable {
     private Chronometer chronometer;
 
-    public ChronoView() {
-        this.chronometer = new Chronometer();
-    }
-
     public ChronoView(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
