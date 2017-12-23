@@ -1,8 +1,6 @@
 package Model;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Objects;
 
 public class Travel {
@@ -52,8 +50,19 @@ public class Travel {
         return departureDate;
     }
 
-    public LocalDateTime getTimeAtArrival(){
-        return LocalDateTime.from(this.departureDate.plus(this.duration).atZone(ZoneId.of(destination)));
+    public ZonedDateTime getTimeAtArrival(){
+        ZoneId leavingZone = ZoneId.of(origin);
+        ZoneId arrivingZone = ZoneId.of(destination);
+
+        LocalDateTime leaving = this.departureDate;
+        ZonedDateTime departure = ZonedDateTime.of(leaving, leavingZone);
+
+        long hours = this.duration.toHours();
+        int minutes = (int) ((this.duration.getSeconds() % (60 * 60)) / 60);
+
+        ZonedDateTime arrival = departure.withZoneSameInstant(arrivingZone).plusHours(hours).plusMinutes(minutes);
+
+        return arrival;
     }
 
     public double getCost() {
