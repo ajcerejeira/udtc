@@ -1,7 +1,7 @@
 package View;
 
 import Model.Chronometer;
-import static java.lang.System.out;
+import Utils.UI.*;
 
 public class ChronoView implements Runnable {
     private Chronometer chronometer;
@@ -11,49 +11,58 @@ public class ChronoView implements Runnable {
     }
 
     private void start() {
-        out.println("Initializing Chronometer.");
         chronometer.start();
 
-        Menu menu = new Menu(new Option[] {
-                new Option("Pause", this::pause),
-                new Option("Stop", this::stop)
-        });
-        menu.run();
+        new UI(new Runnable[] {
+                new Title("Chronometer", 1),
+                new Title("Chronometer is running...", 2),
+                new Menu(new Option[] {
+                        new Option("P", "Pause", this::pause),
+                        new Option("S", "Stop", this::stop),
+                }),
+        }).run();
     }
 
     private void stop() {
-        out.println("Stopping Chronometer.");
         chronometer.stop();
-        out.println("Runtime: " + chronometer.getRuntime().replace("PT",""));
+
+        new UI(new Runnable[] {
+                new Title("Chronometer", 1),
+                new Title("Ellapsed time: " + chronometer.getRuntime().replace("PT", ""), 2),
+                new Menu(new Option[] {
+                        new Option("B", "Back", this::run),
+                }),
+        }).run();
+
         chronometer.reset();
         this.run();
     }
 
     private void pause() {
-        out.println("Chronometer has paused.");
         chronometer.pause();
-        Menu menu = new Menu(new Option[] {
-                new Option("Resume", this::resume)
-        });
-        menu.run();
+
+        new UI(new Runnable[] {
+                new Title("Chronometer", 1),
+                new Title("Paused", 2),
+                new Menu(new Option[] {
+                        new Option("R", "Resume", this::resume),
+                }),
+        }).run();
     }
 
     private void resume() {
-        out.println("Chronometer has resumed.");
         chronometer.resume();
-        Menu menu = new Menu(new Option[] {
-                new Option("Pause", this::pause),
-                new Option("Stop", this::stop)
-        });
-        menu.run();
+        this.start();
     }
 
     @Override
     public void run() {
-        Menu menu = new Menu(new Option[] {
-                new Option("Start", this::start),
-                new Option("Return", () -> System.out.println())
-        });
-        menu.run();
+        new UI(new Runnable[] {
+                new Title("Chronometer", 1),
+                new Menu(new Option[] {
+                        new Option("S", "Start", this::start),
+                        new Option("B", "Back", () -> System.out.println()),
+                }),
+        }).run();
     }
 }
