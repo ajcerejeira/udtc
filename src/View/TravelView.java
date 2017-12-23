@@ -3,13 +3,12 @@ package View;
 import Model.Travel;
 import Model.Travels;
 import Utils.Input.DateParser;
+import Utils.Static;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
+
 import static java.lang.System.out;
 
 public class TravelView implements Runnable{
@@ -38,17 +37,6 @@ public class TravelView implements Runnable{
         menu.run();
     }
 
-    private void arrivalTime() {
-        int index=1;
-        out.println("Available travels");
-        for(Travel t: this.travels.getTravels()){
-            out.println("["+index+"] " + t.toString());
-            index++;
-        }
-        out.print("Travel to check\n>>> ");
-        out.println("You will arrive at " + this.travels.getTravels().get(new Scanner(System.in).nextInt()-1).getTimeAtArrival().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " local time.");
-    }
-
     private void add() {
         Travel t = new Travel();
         Duration dur = Duration.ZERO;
@@ -60,7 +48,7 @@ public class TravelView implements Runnable{
         out.print("Destination: ");
         t.setDestination(sc.nextLine());
         out.print("Departure date: (YYYY-MM-DD hh:mm:ss)");
-        t.setDepartureDate(DateParser.parseDate(sc.nextLine()));
+        t.setDepartureDate(DateParser.parseDateTime(sc.nextLine()));
         out.println("Duration:");
         out.print("       -> Hours: ");
         dur = dur.plusHours(sc.nextInt());
@@ -85,6 +73,17 @@ public class TravelView implements Runnable{
         out.print("Travel to remove\n>>> ");
         this.travels.removeTravel(new Scanner(System.in).nextInt()-1);
         out.println("Travel has been removed.");
+    }
+
+    private void arrivalTime() {
+        int index=1;
+        out.println("Available travels");
+        for(Travel t: this.travels.getTravels()){
+            out.println("["+index+"] " + t.toString());
+            index++;
+        }
+        out.print("Travel to check\n>>> ");
+        out.println("You will arrive at " + this.travels.getTravels().get(new Scanner(System.in).nextInt()-1).getTimeAtArrival().format(Static.dtf) + " local time.");
     }
 
     private void listAll() {
@@ -129,9 +128,9 @@ public class TravelView implements Runnable{
     private void listBetweenDates(){
         LocalDateTime d1,d2;
         out.print("First date: (YYYY-MM-DD hh:mm:ss) \n>>> ");
-        d1=DateParser.parseDate(new Scanner(System.in).nextLine());
+        d1=DateParser.parseDateTime(new Scanner(System.in).nextLine());
         out.print("Second date: (YYYY-MM-DD hh:mm:ss) \n>>> ");
-        d2=DateParser.parseDate(new Scanner(System.in).nextLine());
+        d2=DateParser.parseDateTime(new Scanner(System.in).nextLine());
         for(Travel t: this.travels.travelsBetweenDates(d1,d2)){
             out.println(t.toString());
         }
