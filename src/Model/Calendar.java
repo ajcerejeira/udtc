@@ -50,14 +50,14 @@ public class Calendar implements ICalendar{
         if (isLeapYear() && getMonth()==2 ) days[getMonth()] = 29;
 
         //header
-        sb.append(" \t\t\t\t\t\t " + months[getMonth()] +" \t "+ getYear());
-        sb.append("\n\tSun\tMon\tTue\tWed\tThur\tFri\tSat\n");
+        sb.append(" \t\t\t\t\t\t " + months[getMonth()] +" \t "+ getYear()+"\n");
+        sb.append("\t  Sun\t  Mon\t  Tue\t  Wed\t  Thur\t  Fri\t  Sat\n");
 
         //calculate first day of month
         int d = day();
 
         //append calendar
-        for (int i = 0; i<d; i++) sb.append("\t\t   ");
+        for (int i = 0; i<d; i++) sb.append("\t\t");
         for (int i = 1; i <= days[getMonth()]; i++) {
             sb.append("\t\t"+i);
             if (((i + d)%7 == 0) || (i == days[getMonth()])) sb.append("\n");

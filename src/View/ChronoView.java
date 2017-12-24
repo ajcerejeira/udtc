@@ -2,6 +2,7 @@ package View;
 
 import Model.Chronometer;
 import Utils.UI.*;
+import Utils.Static;
 
 public class ChronoView implements Runnable {
     private Chronometer chronometer;
@@ -28,10 +29,11 @@ public class ChronoView implements Runnable {
 
         new UI(new Runnable[] {
                 new Title("Chronometer", 1),
-                new Title("Ellapsed time: " + chronometer.getRuntime().replace("PT", ""), 2),
-                new Menu(new Option[] {
+                new Title("Chronometer has stopped...", 2),
+                new Title("Elapsed time: " + Static.prettyChrono(this.chronometer.getRuntime()), 2),
+                /*new Menu(new Option[] {
                         new Option("B", "Back", this::run),
-                }),
+                }),*/
         }).run();
 
         chronometer.reset();
@@ -43,7 +45,7 @@ public class ChronoView implements Runnable {
 
         new UI(new Runnable[] {
                 new Title("Chronometer", 1),
-                new Title("Paused", 2),
+                new Title("Chronometer has been paused...", 2),
                 new Menu(new Option[] {
                         new Option("R", "Resume", this::resume),
                 }),
@@ -52,7 +54,14 @@ public class ChronoView implements Runnable {
 
     private void resume() {
         chronometer.resume();
-        this.start();
+        new UI(new Runnable[] {
+                new Title("Chronometer", 1),
+                new Title("Chronometer has been resumed...", 2),
+                new Menu(new Option[] {
+                        new Option("P", "Pause", this::pause),
+                        new Option("S", "Stop", this::stop),
+                }),
+        }).run();
     }
 
     @Override
