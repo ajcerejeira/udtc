@@ -192,9 +192,7 @@ public class TravelView implements Runnable{
         }).run();
 
         if(readyToList[0]) {
-            new UI(new Runnable[]{
-                    new IndexedTable(this.travels.travelsBetweenDates(d1[0], d2[0]).size() - 1, this.travels.travelsBetweenDates(d1[0], d2[0]).toArray())
-            }).run();
+            new IndexedTable(this.travels.travelsBetweenDates(d1[0], d2[0]).size() - 1, this.travels.travelsBetweenDates(d1[0], d2[0]).toArray()).run();
         }
         this.run();
     }
