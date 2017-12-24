@@ -1,5 +1,7 @@
 package Model;
 
+import java.time.Duration;
+
 public interface IChronometer {
     void start();
     void stop();
@@ -7,5 +9,5 @@ public interface IChronometer {
     void resume();
     void update();
     void reset();
-    String getRuntime();
+    Duration getRuntime();
 }
