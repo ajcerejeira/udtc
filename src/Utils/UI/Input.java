@@ -14,7 +14,7 @@ public class Input implements Runnable {
 
     @Override
     public void run() {
-        System.out.print(this.text + ": ");
+        System.out.print(this.text + " ");
         Scanner sc = new Scanner(System.in);
         this.action.accept(sc.nextLine());
     }
