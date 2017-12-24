@@ -8,10 +8,10 @@ public interface ITravels {
     void addTravel(Travel t);
     void removeTravel(int n);
     List<Travel> getTravels();
-    List<Travel> cheapestTravels(int n);
-    List<Travel> mostExpensiveTravels(int n);
-    List<Travel> shortestTravels(int n);
-    List<Travel> longestTravels(int n);
+    List<Travel> cheapestTravels();
+    List<Travel> mostExpensiveTravels();
+    List<Travel> shortestTravels();
+    List<Travel> longestTravels();
     List<Travel> travelsBetweenDates(LocalDateTime d1, LocalDateTime d2);
     Duration timeUntilNextTravel();
     Duration timeUntilLastTravel();

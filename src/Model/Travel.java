@@ -89,6 +89,11 @@ public class Travel {
         this.cost = cost;
     }
 
+    public boolean isValid(){
+        return this.getOrigin()!="" && this.getDestination()!="" && this.getDuration()!=null && this.getDepartureDate()!=null;
+    }
+
+
     @Override
     public String toString() {
         return "Travel{" +

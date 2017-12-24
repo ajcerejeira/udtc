@@ -1,8 +1,8 @@
 package Model;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +12,8 @@ import Utils.Static;
 public class DateCalculator implements IDateCalculator {
 
     @Override
-    public Duration differenceBetweenDates(LocalDate d1, LocalDate d2) {
-        return Duration.between(d1,d2);
+    public Period differenceBetweenDates(LocalDate d1, LocalDate d2) {
+        return Period.between(d1,d2);
     }
 
     @Override
@@ -37,17 +37,17 @@ public class DateCalculator implements IDateCalculator {
     }
 
     @Override
-    public List<LocalDate> workDaysYear(LocalDate d1, LocalDate d2) {
-        return this.streamInterval(d1,d2).filter(this::isWeekday).collect(Collectors.toList());
+    public List<LocalDate> workDays(LocalDate d1, LocalDate d2) {
+        return this.streamInterval(d1,d2).filter(Static.not(this::isWeekend)).collect(Collectors.toList());
     }
 
     @Override
-    public List<LocalDate> weekendsYear(LocalDate d1, LocalDate d2) {
-        return this.streamInterval(d1,d2).filter(Static.not(this::isWeekday)).collect(Collectors.toList());
+    public List<LocalDate> weekends(LocalDate d1, LocalDate d2) {
+        return this.streamInterval(d1,d2).filter(this::isWeekend).collect(Collectors.toList());
     }
 
     @Override
-    public boolean isWeekday(LocalDate d1) {
+    public boolean isWeekend(LocalDate d1) {
         DayOfWeek d = d1.getDayOfWeek();
         return d == DayOfWeek.SATURDAY || d == DayOfWeek.SUNDAY;
     }
