@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class Travels implements ITravels {
     private List<Travel> record;
+    private int n;
 
     public Travels() {
         this.record = new ArrayList<>();
@@ -39,23 +40,23 @@ public class Travels implements ITravels {
     }
 
     @Override
-    public List<Travel> cheapestTravels(int n){
-        return this.record.stream().map(Travel::clone).sorted(Comparator.comparingDouble(Travel::getCost)).limit(n).collect(Collectors.toList());
+    public List<Travel> cheapestTravels(){
+        return this.record.stream().map(Travel::clone).sorted(Comparator.comparingDouble(Travel::getCost)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Travel> mostExpensiveTravels(int n){
-        return this.record.stream().map(Travel::clone).sorted(Comparator.comparingDouble(Travel::getCost).reversed()).limit(n).collect(Collectors.toList());
+    public List<Travel> mostExpensiveTravels(){
+        return this.record.stream().map(Travel::clone).sorted(Comparator.comparingDouble(Travel::getCost).reversed()).collect(Collectors.toList());
     }
 
     @Override
-    public List<Travel> shortestTravels(int n) {
-        return this.record.stream().map(Travel::clone).sorted(Comparator.comparing(Travel::getDuration)).limit(n).collect(Collectors.toList());
+    public List<Travel> shortestTravels() {
+        return this.record.stream().map(Travel::clone).sorted(Comparator.comparing(Travel::getDuration)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Travel> longestTravels(int n) {
-        return this.record.stream().map(Travel::clone).sorted(Comparator.comparing(Travel::getDuration).reversed()).limit(n).collect(Collectors.toList());
+    public List<Travel> longestTravels() {
+        return this.record.stream().map(Travel::clone).sorted(Comparator.comparing(Travel::getDuration).reversed()).collect(Collectors.toList());
     }
 
     @Override
@@ -92,5 +93,4 @@ public class Travels implements ITravels {
         Travels travels = (Travels) o;
         return Objects.equals(record, travels.record);
     }
-
 }
