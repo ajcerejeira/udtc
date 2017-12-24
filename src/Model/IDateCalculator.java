@@ -1,14 +1,13 @@
 package Model;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Stream;
 
 public interface IDateCalculator {
-    Duration differenceBetweenDates(LocalDate d1, LocalDate d2);
+    Period differenceBetweenDates(LocalDate d1, LocalDate d2);
     LocalDate dateIncrease(LocalDate d, ChronoUnit c);
     LocalDate dateDecrease(LocalDate d, ChronoUnit c);
     Stream<LocalDate> streamInterval(LocalDate d1, LocalDate d2);

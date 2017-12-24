@@ -20,7 +20,6 @@ public class TravelView implements Runnable{
 
     public TravelView(Travels travels) {
         this.travels = travels;
-
         travels.addTravel(new Travel("Portugal","Iran", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 400.0));
         travels.addTravel(new Travel("America/Indianapolis","America/Virgin", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 500.0));
         travels.addTravel(new Travel("Canada/Atlantic","Canada/Newfoundland", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 600.0));
