@@ -5,16 +5,17 @@
 
 ## Features
 
-- [ ] calcular diferenças entre duas datas
-- [ ] adicionar e remover anos, meses, dias, etc... a uma data
+- [X] calcular diferenças entre duas datas
+- [X] adicionar e remover anos, meses, dias, etc... a uma data (FEITO MAS NAO IMPLEMENTADO)
 - [ ] converter datas para diferentes fusos horários
-- [ ] calendário
-- [ ] cronómetro
+- [X] calendário
+- [X] cronómetro
 - [ ] exportar resultados para ficheiros
 - [ ] calcular primeiro dia da semana de uma dado ano
-- [ ] contagem de dias úteis
-- [ ] calcular diferença de tempos entre duas regiões (exemplo: viagem de
+- [X] contagem de dias úteis
+- [X] contagem de fins de semanas
+- [X] calcular diferença de tempos entre duas regiões (exemplo: viagem de
       avião)
 - [ ] relógio universal
 - [ ] cálculo de prazos finais (pagamentos, etc...)
-- [ ] cálculo de idades
+- [X] cálculo de idades
