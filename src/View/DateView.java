@@ -31,7 +31,8 @@ public class DateView implements Runnable {
                                 out.println(e.getMessage());
                             }
                         }),
-                        new Option("First day of next year", this::firstDay),
+                        new Option("F1","First day of next year", this::firstDay),
+                        new Option("F2","First day of X year", this::firstDayX),
                         new Option("List Days between two Dates", () -> {
                             try {
                                 interval();
@@ -56,6 +57,29 @@ public class DateView implements Runnable {
                         new Option("Back", () -> out.println())
                 })
         }).run();
+    }
+
+    private void firstDayX() {
+        final int[] year = new int[1];
+        final boolean[] flag = {true};
+        new UI(new Runnable[] {
+                new Title("First day of next year", 1),
+                new Input("Input year\n>>> ", m -> {
+                    try {
+                        year[0] = Integer.parseInt(m);
+                    } catch (Exception e) {
+                        flag[0] =false;
+                        out.println(e.getMessage());
+                        this.run();
+                    }
+                }),
+        }).run();
+
+        if(flag[0]){
+            new Title("First day of " + year[0] + " will be a " + LocalDate.of(year[0],1,1).getDayOfWeek(), 2).run();
+        }
+
+        this.run();
     }
 
     private void firstDay() {
