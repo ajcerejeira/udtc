@@ -23,8 +23,7 @@ public class Menu implements Runnable {
             Option option = Arrays.stream(this.options).filter(o -> o.getCommand().equals(command)).findFirst().get();
             option.run();
         } catch (NoSuchElementException e) {
-            System.out.println("Invalid option. Please try again.\n");
-            this.run();
+            throw new NoSuchElementException("Invalid");
         }
     }
 }

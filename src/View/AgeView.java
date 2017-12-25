@@ -48,7 +48,8 @@ public class AgeView implements Runnable{
         final int[] age = new int[1];
 
         new UI(new Runnable[] {
-                new Title("Time until X years old", 1),
+                new Title("Age Calculator", 1),
+                new Title("Time until X years old", 2),
                 new Input("Birthday date: (YYYY-MM-DD)\n>>> ", m -> {
                     try {
                         d1[0] = DateParser.parseDate(m);
@@ -69,7 +70,6 @@ public class AgeView implements Runnable{
 
         Period p = this.age.timeUntilBirthday(d1[0].plusYears(age[0]));
         out.println("You'll be " + age[0] + " years old in " + p.getYears() +" years " + p.getMonths() + " months and " + p.getDays() + " days.");
-
         this.run();
     }
 
@@ -77,7 +77,8 @@ public class AgeView implements Runnable{
         final int[] d = new int[2];
 
         new UI(new Runnable[] {
-                new Title("Time until birthday", 1),
+                new Title("Age Calculator", 1),
+                new Title("Time until birthday", 2),
                 new Input("Birthday Month\n>>> ", m -> {
                     try{
                         d[0] = Integer.parseInt(m);

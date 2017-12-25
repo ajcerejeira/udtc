@@ -30,7 +30,8 @@ public class ClockView implements Runnable {
 
     private void showTime() {
         new UI(new Runnable[] {
-                new Title("Current time at different countries", 1),
+                new Title("Clock", 1),
+                new Title("Current time at different countries", 2),
                 new IndexedTable(this.clock.timeAt().length-1,this.clock.timeAt())
         }).run();
         this.run();
@@ -38,7 +39,8 @@ public class ClockView implements Runnable {
 
     private void getLocalTime() {
         new UI(new Runnable[] {
-                new Title("Local time", 1),
+                new Title("Clock", 1),
+                new Title("Local time", 2),
                 new Title("Check available Time Zone IDs here: http://bit.ly/2pue8HL", 2),
                 new Input("Country code to check?\n>>>", x -> {
                     try {

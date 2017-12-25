@@ -31,18 +31,20 @@ public class TravelView implements Runnable{
     public void run() {
         new UI(new Runnable[] {
                 new Title("Travels", 1),
-                new Option("Add travel", this::add),
-                new Option("Remove travel", this::remove),
-                new Option("Check time at arrival", this::arrivalTime),
-                new Option("L1","List available travels", this::listAll),
-                new Option("L2","List cheapest travels", this::listCheapest),
-                new Option("L3","List most expensive travels", this::listMostExpensive),
-                new Option("L4","List shortest travels", this::listShortest),
-                new Option("L5","List longest travels", this::listLongest),
-                new Option("L6","List travels between two dates", this::listBetweenDates),
-                new Option("T1","Time until next travel", this::listNext),
-                new Option("T2","Time until last travel", this::listLast),
-                new Option("Back", () -> out.println())
+                new Menu(new Option[]{
+                        new Option("Add travel", this::add),
+                        new Option("Remove travel", this::remove),
+                        new Option("Check time at arrival", this::arrivalTime),
+                        new Option("L1", "List available travels", this::listAll),
+                        new Option("L2", "List cheapest travels", this::listCheapest),
+                        new Option("L3", "List most expensive travels", this::listMostExpensive),
+                        new Option("L4", "List shortest travels", this::listShortest),
+                        new Option("L5", "List longest travels", this::listLongest),
+                        new Option("L6", "List travels between two dates", this::listBetweenDates),
+                        new Option("T1", "Time until next travel", this::listNext),
+                        new Option("T2", "Time until last travel", this::listLast),
+                        new Option("Back", () -> out.println())
+                })
         }).run();
     }
 
@@ -66,29 +68,30 @@ public class TravelView implements Runnable{
                     try{
                         t.setDuration(t.getDuration().plusHours(Integer.valueOf(m)));
                     }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
+                        out.println(Static.RED_BOLD + "Invalid input received!" + Static.RESET);
                     }
                 }),
                 new Input(" Minutes", m -> {
                     try {
                         t.setDuration(t.getDuration().plusMinutes(Integer.valueOf(m)));
                     } catch (NumberFormatException e) {
-                        out.println("Invalid input received!");
+                        out.println(Static.RED_BOLD + "Invalid input received!" + Static.RESET);
                     }
                 }),
                 new Input("Cost", c -> {
                     try{
                         t.setCost(Double.valueOf(c));
                     }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
+                        out.println(Static.RED_BOLD + "Invalid input received!" + Static.RESET);
                     }
                 }),
         }).run();
 
-        if(t.isValid())
+        if(t.isValid()) {
             this.travels.addTravel(t);
-        else
-            out.println("\nInvalid data");
+            out.println(Static.GREEN_BOLD + "Travel successfully added!" + Static.RESET);
+        }else
+            out.println(Static.RED_BOLD + "Invalid data!" + Static.RESET);
         this.run();
     }
 
@@ -99,9 +102,9 @@ public class TravelView implements Runnable{
                 new Input("\nTravel to remove?\n>>>", x -> {
                     try {
                         this.travels.removeTravel(Integer.parseInt(x)-1);
-                        out.println("Travel has been removed.");
+                        out.println(Static.GREEN_BOLD + "Travel successfully removed!" + Static.RESET);
                     } catch (Exception e) {
-                        out.println("Invalid range/input!");
+                        out.println(Static.RED_BOLD + "Invalid range or input received!" + Static.RESET);
                     }
                 })
         }).run();

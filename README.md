@@ -7,7 +7,7 @@
 
 - [X] calcular diferenças entre duas datas
 - [X] adicionar e remover anos, meses, dias, etc... a uma data (FEITO MAS NAO IMPLEMENTADO)
-- [ ] converter datas para diferentes fusos horários
+- [X] converter datas para diferentes fusos horários
 - [X] calendário
 - [X] cronómetro
 - [ ] exportar resultados para ficheiros
@@ -16,6 +16,6 @@
 - [X] contagem de fins de semanas
 - [X] calcular diferença de tempos entre duas regiões (exemplo: viagem de
       avião)
-- [ ] relógio universal
+- [X] relógio universal
 - [ ] cálculo de prazos finais (pagamentos, etc...)
 - [X] cálculo de idades

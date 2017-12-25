@@ -8,7 +8,7 @@ import Utils.UI.*;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.System.out;
 
@@ -61,21 +61,22 @@ public class DateView implements Runnable {
 
     private void firstDayX() {
         final int[] year = new int[1];
-        final boolean[] flag = {true};
+        AtomicBoolean flag = new AtomicBoolean(true);
         new UI(new Runnable[] {
-                new Title("First day of next year", 1),
+                new Title("Date Calculator", 1),
+                new Title("First day of next year", 2),
                 new Input("Input year\n>>> ", m -> {
                     try {
                         year[0] = Integer.parseInt(m);
                     } catch (Exception e) {
-                        flag[0] =false;
+                        flag.set(false);
                         out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
         }).run();
 
-        if(flag[0]){
+        if(flag.get()==true){
             new Title("First day of " + year[0] + " will be a " + LocalDate.of(year[0],1,1).getDayOfWeek(), 2).run();
         }
 
@@ -84,7 +85,8 @@ public class DateView implements Runnable {
 
     private void firstDay() {
         new UI(new Runnable[] {
-                new Title("First day of next year", 1),
+                new Title("Date Calculator", 1),
+                new Title("First day of next year", 2),
                 new Title("First day of " + (LocalDate.now().getYear()+1) + " will be a " + LocalDate.of(LocalDate.now().getYear()+1,1,1).getDayOfWeek(), 2)
         }).run();
         this.run();
@@ -94,8 +96,8 @@ public class DateView implements Runnable {
         final LocalDate[] d1 = new LocalDate[1];
         final LocalDate[] d2 = new LocalDate[1];
         new UI(new Runnable[] {
-                new Title("Difference between two Dates", 1),
-
+                new Title("Date Calculator", 1),
+                new Title("Difference between two Dates", 2),
                 new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
                     try {
                         d1[0] = DateParser.parseDate(m);
@@ -126,8 +128,8 @@ public class DateView implements Runnable {
         final LocalDate[] d1 = new LocalDate[1];
         final LocalDate[] d2 = new LocalDate[1];
         new UI(new Runnable[] {
-                new Title("Date Interval", 1),
-
+                new Title("Date Calculator", 1),
+                new Title("Date Interval", 2),
                 new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
                     try {
                         d1[0] = DateParser.parseDate(m);
@@ -159,8 +161,8 @@ public class DateView implements Runnable {
         final LocalDate[] d1 = new LocalDate[1];
         final LocalDate[] d2 = new LocalDate[1];
         new UI(new Runnable[] {
-                new Title("Workdays in interval", 1),
-
+                new Title("Date Calculator", 1),
+                new Title("Workdays in interval", 2),
                 new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
                     try {
                         d1[0] = DateParser.parseDate(m);
@@ -192,8 +194,8 @@ public class DateView implements Runnable {
         final LocalDate[] d1 = new LocalDate[1];
         final LocalDate[] d2 = new LocalDate[1];
         new UI(new Runnable[] {
-                new Title("Weekends in interval", 1),
-
+                new Title("Date Calculator", 1),
+                new Title("Weekends in interval", 2),
                 new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
                     try {
                         d1[0] = DateParser.parseDate(m);
@@ -211,7 +213,6 @@ public class DateView implements Runnable {
                     }
                 })
         }).run();
-
         if(d1[0].isAfter(d2[0]) || d2[0].isBefore(d1[0]))
             throw new InvalidDateException("Invalid date interval");
 

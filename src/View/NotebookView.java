@@ -1,15 +1,34 @@
 package View;
 
+import Exceptions.InvalidDateException;
 import Model.Appointment;
 import Model.Notebook;
 
+import Utils.DateParser;
+import Utils.Static;
 import Utils.UI.*;
+
+import static java.lang.System.out;
 
 public class NotebookView implements Runnable {
     private Notebook notebook;
 
     public NotebookView(Notebook notebook) {
         this.notebook = notebook;
+    }
+
+    @Override
+    public void run() {
+        new UI(new Runnable[] {
+                new Title("Notebook", 1),
+                new Menu(new Option[] {
+                        new Option("A", "Add appointment", this::addAppointment),
+                        new Option("E", "Edit appointment", this::editAppointment),
+                        new Option("D", "Delete appointment", this::deleteAppointment),
+                        new Option("S", "Show appointments", this::searchAppointment),
+                        new Option("B", "Back", () -> System.out.print(""))
+                }),
+        }).run();
     }
 
     private void addAppointment() {
@@ -19,7 +38,13 @@ public class NotebookView implements Runnable {
                 new Title("Notebook", 1),
                 new Title("Add appointment", 2),
                 new Table(this.notebook.getAppointments().toArray()),
-                new Input("Date [dd-mm-yyyy]", text -> System.out.println()),
+                new Input("Date (YYYY-MM-DD hh:mm:ss)", x -> {
+                    try {
+                        appointment.setDate(DateParser.parseDateTime(x));
+                    } catch (InvalidDateException e) {
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
+                    }
+                }),
                 new Input("Appointment", appointment::setText),
         }).run();
 
@@ -50,23 +75,10 @@ public class NotebookView implements Runnable {
     private void searchAppointment() {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
-                new Title("Search appointment",2),
-                new Table(this.notebook.getAppointments().toArray()),
+                new Title("Available appointment",2),
+                new IndexedTable(this.notebook.getAppointments().size()-1,this.notebook.getAppointments().toArray()),
         }).run();
 
         this.run();
-    }
-
-    @Override
-    public void run() {
-        new UI(new Runnable[] {
-                new Title("Notebook", 1),
-                new Table(this.notebook.getAppointments().toArray()),
-                new Option("A", "Add appointment", this::addAppointment),
-                new Option("E", "Edit appointment", this::editAppointment),
-                new Option("D", "Delete appointment", this::deleteAppointment),
-                new Option("S", "Search", this::searchAppointment),
-                new Option("B", "Back", () -> System.out.print("")),
-        }).run();
     }
 }
