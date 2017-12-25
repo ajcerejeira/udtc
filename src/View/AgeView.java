@@ -3,9 +3,8 @@ package View;
 import Exceptions.InvalidDateException;
 import Model.Age;
 import Utils.DateParser;
-import Utils.UI.Input;
-import Utils.UI.Title;
-import Utils.UI.UI;
+import Utils.Static;
+import Utils.UI.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,14 +28,14 @@ public class AgeView implements Runnable{
                             try {
                                 birthday();
                             } catch (Exception e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("T2","Time until you're X years old", () -> {
                             try {
                                 untilXYear();
                             } catch (Exception e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("B", "Back", () -> System.out.print(""))
@@ -54,7 +53,7 @@ public class AgeView implements Runnable{
                     try {
                         d1[0] = DateParser.parseDate(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -62,7 +61,7 @@ public class AgeView implements Runnable{
                     try {
                         age[0] = Integer.parseInt(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -83,14 +82,14 @@ public class AgeView implements Runnable{
                     try{
                         d[0] = Integer.parseInt(m);
                     }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
+                        out.println(Static.RED_BOLD + "Invalid input received!" + Static.RESET);
                     }
                 }),
                 new Input("Birthday Day\n>>> ", m -> {
                     try{
                         d[1] = Integer.parseInt(m);
                     }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
+                        out.println(Static.RED_BOLD + "Invalid input received!" + Static.RESET);
                     }
                 }),
         }).run();

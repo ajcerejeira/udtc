@@ -31,20 +31,18 @@ public class TravelView implements Runnable{
     public void run() {
         new UI(new Runnable[] {
                 new Title("Travels", 1),
-                new Menu(new Option[] {
-                        new Option("Add travel", this::add),
-                        new Option("Remove travel", this::remove),
-                        new Option("Check time at arrival", this::arrivalTime),
-                        new Option("L1","List available travels", this::listAll),
-                        new Option("L2","List cheapest travels", this::listCheapest),
-                        new Option("L3","List most expensive travels", this::listMostExpensive),
-                        new Option("L4","List shortest travels", this::listShortest),
-                        new Option("L5","List longest travels", this::listLongest),
-                        new Option("L6","List travels between two dates", this::listBetweenDates),
-                        new Option("T1","Time until next travel", this::listNext),
-                        new Option("T2","Time until last travel", this::listLast),
-                        new Option("Back", () -> out.println())
-                })
+                new Option("Add travel", this::add),
+                new Option("Remove travel", this::remove),
+                new Option("Check time at arrival", this::arrivalTime),
+                new Option("L1","List available travels", this::listAll),
+                new Option("L2","List cheapest travels", this::listCheapest),
+                new Option("L3","List most expensive travels", this::listMostExpensive),
+                new Option("L4","List shortest travels", this::listShortest),
+                new Option("L5","List longest travels", this::listLongest),
+                new Option("L6","List travels between two dates", this::listBetweenDates),
+                new Option("T1","Time until next travel", this::listNext),
+                new Option("T2","Time until last travel", this::listLast),
+                new Option("Back", () -> out.println())
         }).run();
     }
 
@@ -61,7 +59,7 @@ public class TravelView implements Runnable{
                     try {
                         t.setDepartureDate(DateParser.parseDateTime(x));
                     } catch (InvalidDateException e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                     }
                 }),
                 new Input("Duration\n Hours", m -> {
@@ -119,7 +117,7 @@ public class TravelView implements Runnable{
                         String str = this.travels.getTravels().get(Integer.parseInt(x)-1).getTimeAtArrival().format(Static.dtf);
                         out.println("You will arrive at " + str + " local time.");
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                     }
                 })
         }).run();
@@ -178,7 +176,7 @@ public class TravelView implements Runnable{
                         d1[0] = DateParser.parseDateTime(x);
                     } catch (InvalidDateException e) {
                         readyToList[0] =false;
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                     }
                 }),
                 new Input("Second Date (YYYY-MM-DD hh:mm:ss)", y -> {
@@ -186,7 +184,7 @@ public class TravelView implements Runnable{
                         d2[0] = DateParser.parseDateTime(y);
                     } catch (InvalidDateException e) {
                         readyToList[0] =false;
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                     }
                 })
         }).run();

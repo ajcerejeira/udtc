@@ -17,12 +17,11 @@ public class Clock implements IClock {
             ZoneOffset currentOffsetForMyZone = zid.getRules().getOffset(now);
 
             Duration duration = Duration.ofSeconds(currentOffsetForMyZone.getTotalSeconds());
-            System.out.print("dur "+ duration);
             long hours = duration.toHours();
             int minutes = (int) ((duration.getSeconds() % (60 * 60)) / 60);
 
             LocalDateTime arrival = LocalDateTime.now().plusHours(hours).plusMinutes(minutes);
-            output[i] = "Current time at " + s + " is " + arrival.toString().replace("T"," ");
+            output[i] = "Current time at " + s + " is " + arrival.toString().substring(0,arrival.toString().indexOf(".")).replace("T"," ");
             i++;
         }
         return output;
@@ -30,6 +29,13 @@ public class Clock implements IClock {
 
     @Override
     public LocalDateTime getLocalTimeAt(ZoneId id) {
-       return null;
+        Instant now = Instant.now();
+        ZoneOffset currentOffsetForMyZone = id.getRules().getOffset(now);
+
+        Duration duration = Duration.ofSeconds(currentOffsetForMyZone.getTotalSeconds());
+        long hours = duration.toHours();
+        int minutes = (int) ((duration.getSeconds() % (60 * 60)) / 60);
+
+        return LocalDateTime.now().plusHours(hours).plusMinutes(minutes);
     }
 }

@@ -28,7 +28,7 @@ public class DateView implements Runnable {
                             try {
                                 difference();
                             } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("F1","First day of next year", this::firstDay),
@@ -37,21 +37,21 @@ public class DateView implements Runnable {
                             try {
                                 interval();
                             } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("WD","Workdays between two Dates", () -> {
                             try {
                                 workdays();
                             } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("WE","Weekends between two Dates", () -> {
                             try {
                                 weekends();
                             } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
+                                out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                             }
                         }),
                         new Option("Back", () -> out.println())
@@ -69,7 +69,7 @@ public class DateView implements Runnable {
                         year[0] = Integer.parseInt(m);
                     } catch (Exception e) {
                         flag[0] =false;
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -100,7 +100,7 @@ public class DateView implements Runnable {
                     try {
                         d1[0] = DateParser.parseDate(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -108,7 +108,7 @@ public class DateView implements Runnable {
                     try {
                         d2[0] = DateParser.parseDate(n);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 })
@@ -132,7 +132,7 @@ public class DateView implements Runnable {
                     try {
                         d1[0] = DateParser.parseDate(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -140,7 +140,7 @@ public class DateView implements Runnable {
                     try {
                         d2[0] = DateParser.parseDate(n);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 })
@@ -165,7 +165,7 @@ public class DateView implements Runnable {
                     try {
                         d1[0] = DateParser.parseDate(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -173,7 +173,7 @@ public class DateView implements Runnable {
                     try {
                         d2[0] = DateParser.parseDate(n);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 })
@@ -198,7 +198,7 @@ public class DateView implements Runnable {
                     try {
                         d1[0] = DateParser.parseDate(m);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 }),
@@ -206,7 +206,7 @@ public class DateView implements Runnable {
                     try {
                         d2[0] = DateParser.parseDate(n);
                     } catch (Exception e) {
-                        out.println(e.getMessage());
+                        out.println(Static.RED_BOLD  + e.getMessage() + Static.RESET);
                         this.run();
                     }
                 })

@@ -62,13 +62,11 @@ public class NotebookView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
                 new Table(this.notebook.getAppointments().toArray()),
-                new Menu(new Option[] {
-                        new Option("A", "Add appointment", this::addAppointment),
-                        new Option("E", "Edit appointment", this::editAppointment),
-                        new Option("D", "Delete appointment", this::deleteAppointment),
-                        new Option("S", "Search", this::searchAppointment),
-                        new Option("B", "Back", () -> System.out.print(""))
-                }),
+                new Option("A", "Add appointment", this::addAppointment),
+                new Option("E", "Edit appointment", this::editAppointment),
+                new Option("D", "Delete appointment", this::deleteAppointment),
+                new Option("S", "Search", this::searchAppointment),
+                new Option("B", "Back", () -> System.out.print("")),
         }).run();
     }
 }
