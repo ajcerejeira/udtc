@@ -3,6 +3,8 @@ package View;
 import Exceptions.InvalidDateException;
 import Model.Age;
 import Utils.DateParser;
+import Utils.Mutable;
+import Utils.NumParser;
 import Utils.UI.Input;
 import Utils.UI.Title;
 import Utils.UI.UI;
@@ -18,7 +20,6 @@ public class AgeView implements Runnable{
     public AgeView(Age age) {
         this.age = age;
     }
-
 
     @Override
     public void run() {
@@ -45,73 +46,43 @@ public class AgeView implements Runnable{
     }
 
     private void untilXYear() {
-        final LocalDate[] d1 = new LocalDate[1];
-        final int[] age = new int[1];
+        Mutable<LocalDate> date = new Mutable<>(LocalDate.now());
+        Mutable<Integer> age = new Mutable<>(0);
 
         new UI(new Runnable[] {
                 new Title("Time until X years old", 1),
-                new Input("Birthday date: (YYYY-MM-DD)\n>>> ", m -> {
-                    try {
-                        d1[0] = DateParser.parseDate(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
-                new Input("How old do you want to be?\n>>> ", m -> {
-                    try {
-                        age[0] = Integer.parseInt(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
+                new Input<>("Birthday date: [yyyy-mm-dd]", date::set, DateParser::parseDate2),
+                new Input<>("How old do you want to be?", age::set, NumParser::parseInt),
         }).run();
 
-        Period p = this.age.timeUntilBirthday(d1[0].plusYears(age[0]));
-        out.println("You'll be " + age[0] + " years old in " + p.getYears() +" years " + p.getMonths() + " months and " + p.getDays() + " days.");
+        Period p = this.age.timeUntilBirthday(date.get().plusYears(age.get()));
+        out.println("You'll be " + age.get() + " years old in " + p.getYears() +" years " + p.getMonths() + " months and " + p.getDays() + " days.");
 
         this.run();
     }
 
-    private void birthday() throws InvalidDateException {
-        final int[] d = new int[2];
+    private void birthday() {
+        LocalDate now = LocalDate.now();
+        Mutable<LocalDate> birthdate = new Mutable<>(LocalDate.now());
 
         new UI(new Runnable[] {
                 new Title("Time until birthday", 1),
-                new Input("Birthday Month\n>>> ", m -> {
-                    try{
-                        d[0] = Integer.parseInt(m);
-                    }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
-                    }
-                }),
-                new Input("Birthday Day\n>>> ", m -> {
-                    try{
-                        d[1] = Integer.parseInt(m);
-                    }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
-                    }
-                }),
+                new Input<>("Birthday [yyyy-mm-dd]", birthdate::set, DateParser::parseDate2),
         }).run();
 
-        if(d[0] == LocalDate.now().getMonth().getValue() && d[1]==LocalDate.now().getDayOfMonth()){
+        now = now.withYear(birthdate.get().getYear());
+
+        if (birthdate.get().equals(now)) {
             out.println("Today is your birthday! Happy birthday!");
-        }else{
-            if(d[0] <= LocalDate.now().getMonth().getValue()) {
-                if (d[1] <= LocalDate.now().getDayOfMonth()) {
-                    LocalDate date = LocalDate.of(LocalDate.now().getYear()+1, d[0], d[1]);
-                    Period p = this.age.timeUntilBirthday(date);
-                    out.println("\nTime until your next birthday -> Years: " + p.getYears() + " Months: " + p.getMonths() + " Days: "+ p.getDays());
-                }else if (d[1] > LocalDate.now().getDayOfMonth()) {
-                    LocalDate date = LocalDate.of(LocalDate.now().getYear(), d[0], d[1]);
-                    Period p = this.age.timeUntilBirthday(date);
-                    out.println("\nTime until your next birthday -> Years: " + p.getYears() + " Months: " + p.getMonths() + " Days: "+ p.getDays());
-                }
-            }else{
-                LocalDate date = LocalDate.of(LocalDate.now().getYear()+1, d[0], d[1]);
-                Period p = this.age.timeUntilBirthday(date);
-                out.println("\nTime until your next birthday -> Years: " + p.getYears() + " Months: " + p.getMonths() + " Days: "+ p.getDays());
+        } else {
+            if (birthdate.get().isBefore(now)) {
+                Period p = Period.between(birthdate.get(), now);
+                out.println("Time until your next birthday:");
+                out.println(p.getYears() + " year(s), " + p.getMonths() + " month(s), " + p.getDays());
+            } else {
+                Period p = Period.between(birthdate.get(), now.plusYears(1));
+                out.println("Time until your next birthday:");
+                out.println(p.getYears() + " year(s), " + p.getMonths() + " month(s), " + p.getDays());
             }
         }
         this.run();

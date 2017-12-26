@@ -1,6 +1,7 @@
 package View;
 
 import Model.Calendar;
+import Utils.NumParser;
 import Utils.UI.Input;
 import Utils.UI.Title;
 import Utils.UI.UI;
@@ -28,8 +29,8 @@ public class CalendarView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Show Calendar", 1),
 
-                new Input("Year", m -> this.calendar.setYear(Integer.parseInt(m))),
-                new Input("Month", d -> this.calendar.setMonth(Integer.parseInt(d)))
+                new Input<>("Year", this.calendar::setYear, NumParser::parseInt),
+                new Input<>("Month", this.calendar::setMonth, NumParser::parseInt)
         }).run();
         out.println(this.calendar.buildCalendar());
     }

@@ -31,9 +31,9 @@ public class ChronoView implements Runnable {
                 new Title("Chronometer", 1),
                 new Title("Chronometer has stopped...", 2),
                 new Title("Elapsed time: " + Static.prettyChrono(this.chronometer.getRuntime()), 2),
-                /*new Menu(new Option[] {
-                        new Option("B", "Back", this::run),
-                }),*/
+                new Menu(new Option[] {
+                        new Option("B", "Back", this),
+                })
         }).run();
 
         chronometer.reset();
@@ -70,7 +70,7 @@ public class ChronoView implements Runnable {
                 new Title("Chronometer", 1),
                 new Menu(new Option[] {
                         new Option("S", "Start", this::start),
-                        new Option("B", "Back", () -> System.out.print("")),
+                        new Option("B", "Back", System.out::println),
                 }),
         }).run();
     }

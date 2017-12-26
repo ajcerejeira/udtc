@@ -6,10 +6,14 @@ import Exceptions.ReturnException;
 import Model.Travel;
 import Model.Travels;
 import Utils.DateParser;
+import Utils.Mutable;
+import Utils.NumParser;
 import Utils.Static;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Scanner;
 
 import static java.lang.System.out;
@@ -20,11 +24,11 @@ public class TravelView implements Runnable{
 
     public TravelView(Travels travels) {
         this.travels = travels;
-        travels.addTravel(new Travel("Portugal","Iran", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 400.0));
-        travels.addTravel(new Travel("America/Indianapolis","America/Virgin", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 500.0));
-        travels.addTravel(new Travel("Canada/Atlantic","Canada/Newfoundland", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 600.0));
-        travels.addTravel(new Travel("Brazil/East","Portugal", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 0.0));
-        travels.addTravel(new Travel("Africa/Luanda","Asia/Jerusalem", Duration.ZERO, LocalDateTime.of(2017,12,01,14,00,00) , 400.0));
+        travels.addTravel(new Travel("Portugal","Iran", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 400.0));
+        travels.addTravel(new Travel("America/Indianapolis","America/Virgin", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 500.0));
+        travels.addTravel(new Travel("Canada/Atlantic","Canada/Newfoundland", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 600.0));
+        travels.addTravel(new Travel("Brazil/East","Portugal", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 0.0));
+        travels.addTravel(new Travel("Africa/Luanda","Asia/Jerusalem", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 400.0));
     }
 
     @Override
@@ -43,7 +47,7 @@ public class TravelView implements Runnable{
                         new Option("L6","List travels between two dates", this::listBetweenDates),
                         new Option("T1","Time until next travel", this::listNext),
                         new Option("T2","Time until last travel", this::listLast),
-                        new Option("Back", () -> out.println())
+                        new Option("Back", out::println),
                 })
         }).run();
     }
@@ -55,36 +59,12 @@ public class TravelView implements Runnable{
                 new Title("Travels", 1),
                 new Title("Add travel", 2),
 
-                new Input("Origin", t::setOrigin),
-                new Input("Destination", t::setDestination),
-                new Input("Departure date (YYYY-MM-DD hh:mm:ss)", x -> {
-                    try {
-                        t.setDepartureDate(DateParser.parseDateTime(x));
-                    } catch (InvalidDateException e) {
-                        out.println(e.getMessage());
-                    }
-                }),
-                new Input("Duration\n Hours", m -> {
-                    try{
-                        t.setDuration(t.getDuration().plusHours(Integer.valueOf(m)));
-                    }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
-                    }
-                }),
-                new Input(" Minutes", m -> {
-                    try {
-                        t.setDuration(t.getDuration().plusMinutes(Integer.valueOf(m)));
-                    } catch (NumberFormatException e) {
-                        out.println("Invalid input received!");
-                    }
-                }),
-                new Input("Cost", c -> {
-                    try{
-                        t.setCost(Double.valueOf(c));
-                    }catch(NumberFormatException e){
-                        out.println("Invalid input received!");
-                    }
-                }),
+                new Input<>("Origin", t::setOrigin, Optional::of),
+                new Input<>("Destination", t::setDestination, Optional::of),
+                new Input<>("Departure date (YYYY-MM-DD hh:mm:ss)", t::setDepartureDate, DateParser::parseDateTime2),
+                new Input<>("Duration\n Hours", h -> t.setDuration(t.getDuration().plusHours(h)), NumParser::parseInt),
+                new Input<>(" Minutes", m -> t.setDuration(t.getDuration().plusMinutes(m)), NumParser::parseInt),
+                new Input<>("Cost", t::setCost, NumParser::parseDouble),
         }).run();
 
         if(t.isValid())
@@ -98,30 +78,18 @@ public class TravelView implements Runnable{
         new UI(new Runnable[] {
                 new Title("Available travels", 1),
                 new IndexedTable(this.travels.getTravels().size()-1,this.travels.getTravels().toArray()),
-                new Input("\nTravel to remove?\n>>>", x -> {
-                    try {
-                        this.travels.removeTravel(Integer.parseInt(x)-1);
-                        out.println("Travel has been removed.");
-                    } catch (Exception e) {
-                        out.println("Invalid range/input!");
-                    }
-                })
+                new Input<>("\nTravel to remove?\n>>>", n -> this.travels.removeTravel(n - 1), NumParser::parseInt),
         }).run();
         this.run();
     }
 
     private void arrivalTime() {
-        new UI(new Runnable[] {
+        new UI(new Runnable[]{
                 new Title("All booked Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.getTravels().toArray()),
-                new Input("\nTravel to remove?\n>>>", x -> {
-                    try {
-                        String str = this.travels.getTravels().get(Integer.parseInt(x)-1).getTimeAtArrival().format(Static.dtf);
-                        out.println("You will arrive at " + str + " local time.");
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                    }
-                })
+                new IndexedTable(this.travels.getTravels().size() - 1, this.travels.getTravels().toArray()),
+                new Input<>("\nTravel to remove?\n>>>",
+                        n -> out.println(this.travels.getTravels().get(n - 1).getTimeAtArrival().format(Static.dtf)),
+                        NumParser::parseInt),
         }).run();
         this.run();
     }
@@ -167,35 +135,16 @@ public class TravelView implements Runnable{
     }
 
     private void listBetweenDates() {
-        LocalDateTime[] d1 = new LocalDateTime[1];
-        LocalDateTime[] d2 = new LocalDateTime[1];
-        final boolean[] readyToList = {true};
+        Mutable<LocalDateTime> d1 = new Mutable<>(LocalDateTime.now());
+        Mutable<LocalDateTime> d2 = new Mutable<>(LocalDateTime.now());
 
         new UI(new Runnable[] {
                 new Title("Travels between Dates", 1),
-                new Input("First Date (YYYY-MM-DD hh:mm:ss)", x -> {
-                    try {
-                        d1[0] = DateParser.parseDateTime(x);
-                    } catch (InvalidDateException e) {
-                        readyToList[0] =false;
-                        out.println(e.getMessage());
-                    }
-                }),
-                new Input("Second Date (YYYY-MM-DD hh:mm:ss)", y -> {
-                    try {
-                        d2[0] = DateParser.parseDateTime(y);
-                    } catch (InvalidDateException e) {
-                        readyToList[0] =false;
-                        out.println(e.getMessage());
-                    }
-                })
-        }).run();
+                new Input<>("First Date (YYYY-MM-DD hh:mm:ss)", d1::set, DateParser::parseDateTime2),
+                new Input<>("Second Date (YYYY-MM-DD hh:mm:ss)", d2::set, DateParser::parseDateTime2),
+                new IndexedTable(this.travels.travelsBetweenDates(d1.get(), d2.get()).size() - 1, this.travels.travelsBetweenDates(d1.get(), d2.get()).toArray())
 
-        if(readyToList[0]) {
-            new UI(new Runnable[]{
-                    new IndexedTable(this.travels.travelsBetweenDates(d1[0], d2[0]).size() - 1, this.travels.travelsBetweenDates(d1[0], d2[0]).toArray())
-            }).run();
-        }
+        }).run();
         this.run();
     }
 

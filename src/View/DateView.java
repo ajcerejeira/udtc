@@ -3,6 +3,7 @@ package View;
 import Exceptions.InvalidDateException;
 import Model.DateCalculator;
 import Utils.DateParser;
+import Utils.Mutable;
 import Utils.Static;
 import Utils.UI.*;
 
@@ -24,36 +25,12 @@ public class DateView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Date Calculator", 1),
                 new Menu(new Option[] {
-                        new Option("Difference between two Dates", () -> {
-                            try {
-                                difference();
-                            } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
-                            }
-                        }),
+                        new Option("Difference between two Dates", this::difference),
                         new Option("First day of next year", this::firstDay),
-                        new Option("List Days between two Dates", () -> {
-                            try {
-                                interval();
-                            } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
-                            }
-                        }),
-                        new Option("WD","Workdays between two Dates", () -> {
-                            try {
-                                workdays();
-                            } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
-                            }
-                        }),
-                        new Option("WE","Weekends between two Dates", () -> {
-                            try {
-                                weekends();
-                            } catch (InvalidDateException e) {
-                                out.println(e.getMessage());
-                            }
-                        }),
-                        new Option("Back", () -> out.println())
+                        new Option("List Days between two Dates", this::interval),
+                        new Option("WD","Workdays between two Dates", this::workdays),
+                        new Option("WE","Weekends between two Dates", this::weekends),
+                        new Option("Back", out::println)
                 })
         }).run();
     }
@@ -66,134 +43,88 @@ public class DateView implements Runnable {
         this.run();
     }
 
-    private void difference() throws InvalidDateException {
-        final LocalDate[] d1 = new LocalDate[1];
-        final LocalDate[] d2 = new LocalDate[1];
+    private void difference() {
+        Mutable<LocalDate> d1 = new Mutable<>(LocalDate.now());
+        Mutable<LocalDate> d2 = new Mutable<>(LocalDate.now());
         new UI(new Runnable[] {
                 new Title("Difference between two Dates", 1),
-
-                new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
-                    try {
-                        d1[0] = DateParser.parseDate(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
-                new Input("Second date: (YYYY-MM-DD)\n>>> ", n -> {
-                    try {
-                        d2[0] = DateParser.parseDate(n);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                })
+                new Input<>("First date [yyyy-mm-dd]", d1::set, DateParser::parseDate2),
+                new Input<>("Second date [yyyy-mm-dd]", d2::set, DateParser::parseDate2),
         }).run();
 
-        if(d1[0].isAfter(d2[0]) || d2[0].isBefore(d1[0]))
-            throw new InvalidDateException("Invalid date interval");
+        Period p = d1.get().isBefore(d2.get()) ?
+                  this.dateCalculator.differenceBetweenDates(d1.get(), d2.get())
+                : this.dateCalculator.differenceBetweenDates(d2.get(), d1.get());
 
-        Period p = this.dateCalculator.differenceBetweenDates(d1[0],d2[0]);
-        out.println("\nYears: " + p.getYears() + " Months: " + p.getMonths() + " Days: "+ p.getDays());
+        out.println("Years: " + p.getYears() + " Months: " + p.getMonths() + " Days: "+ p.getDays());
         this.run();
     }
 
-    private void interval() throws InvalidDateException {
-        final LocalDate[] d1 = new LocalDate[1];
-        final LocalDate[] d2 = new LocalDate[1];
-        new UI(new Runnable[] {
-                new Title("Date Interval", 1),
+    private void interval() {
+        Mutable<LocalDate> d1 = new Mutable<>(LocalDate.now());
+        Mutable<LocalDate> d2 = new Mutable<>(LocalDate.now());
 
-                new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
-                    try {
-                        d1[0] = DateParser.parseDate(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
-                new Input("Second date: (YYYY-MM-DD)\n>>> ", n -> {
-                    try {
-                        d2[0] = DateParser.parseDate(n);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                })
+        new UI(new Runnable[]{
+                new Title("Date Interval", 1),
+                new Input<>("First date [yyyy-mm-dd]", d1::set, DateParser::parseDate2),
+                new Input<>("Second date [yyyy-mm-dd]", d2::set, DateParser::parseDate2),
         }).run();
 
-        if(d1[0].isAfter(d2[0]) || d2[0].isBefore(d1[0]))
-            throw new InvalidDateException("Invalid date interval");
-
-        for(LocalDate dt: this.dateCalculator.listInterval(d1[0], d2[0])){
-            out.println(dt.format(Static.df).toString() + " -> " + dt.getDayOfWeek());
+        if (d1.get().isBefore(d2.get())) {
+            for(LocalDate dt: this.dateCalculator.listInterval(d1.get(), d2.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
+        } else {
+            for(LocalDate dt: this.dateCalculator.listInterval(d2.get(), d1.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
         }
         this.run();
     }
 
-    private void workdays() throws InvalidDateException {
-        final LocalDate[] d1 = new LocalDate[1];
-        final LocalDate[] d2 = new LocalDate[1];
+    private void workdays() {
+        Mutable<LocalDate> d1 = new Mutable<>(LocalDate.now());
+        Mutable<LocalDate> d2 = new Mutable<>(LocalDate.now());
+
         new UI(new Runnable[] {
                 new Title("Workdays in interval", 1),
-
-                new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
-                    try {
-                        d1[0] = DateParser.parseDate(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
-                new Input("Second date: (YYYY-MM-DD)\n>>> ", n -> {
-                    try {
-                        d2[0] = DateParser.parseDate(n);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                })
+                new Input<>("First date [yyyy-mm-dd]", d1::set, DateParser::parseDate2),
+                new Input<>("Second date [yyyy-mm-dd]", d2::set, DateParser::parseDate2),
         }).run();
 
-        if(d1[0].isAfter(d2[0]) || d2[0].isBefore(d1[0]))
-            throw new InvalidDateException("Invalid date interval");
-
-        for(LocalDate dt: this.dateCalculator.workDays(d1[0], d2[0])){
-            out.println(dt.format(Static.df).toString() + " -> " + dt.getDayOfWeek());
+        if (d1.get().isBefore(d2.get())) {
+            for(LocalDate dt: this.dateCalculator.workDays(d1.get(), d2.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
+        } else {
+            for(LocalDate dt: this.dateCalculator.workDays(d2.get(), d1.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
         }
+
         this.run();
     }
 
-    private void weekends() throws InvalidDateException {
-        final LocalDate[] d1 = new LocalDate[1];
-        final LocalDate[] d2 = new LocalDate[1];
+    private void weekends() {
+        Mutable<LocalDate> d1 = new Mutable<>(LocalDate.now());
+        Mutable<LocalDate> d2 = new Mutable<>(LocalDate.now());
+
         new UI(new Runnable[] {
                 new Title("Weekends in interval", 1),
-
-                new Input("First date: (YYYY-MM-DD)\n>>> ", m -> {
-                    try {
-                        d1[0] = DateParser.parseDate(m);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                }),
-                new Input("Second date: (YYYY-MM-DD)\n>>> ", n -> {
-                    try {
-                        d2[0] = DateParser.parseDate(n);
-                    } catch (Exception e) {
-                        out.println(e.getMessage());
-                        this.run();
-                    }
-                })
+                new Input<>("First date [yyyy-mm-dd]", d1::set, DateParser::parseDate2),
+                new Input<>("Second date [yyyy-mm-dd]", d2::set, DateParser::parseDate2),
         }).run();
 
-        if(d1[0].isAfter(d2[0]) || d2[0].isBefore(d1[0]))
-            throw new InvalidDateException("Invalid date interval");
-
-        for(LocalDate dt: this.dateCalculator.weekends(d1[0], d2[0])){
-            out.println(dt.format(Static.df).toString() + " -> " + dt.getDayOfWeek());
+        if (d1.get().isBefore(d2.get())) {
+            for(LocalDate dt: this.dateCalculator.weekends(d1.get(), d2.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
+        } else {
+            for(LocalDate dt: this.dateCalculator.weekends(d2.get(), d1.get())){
+                out.println(dt.format(Static.df) + " -> " + dt.getDayOfWeek());
+            }
         }
+
         this.run();
     }
 }

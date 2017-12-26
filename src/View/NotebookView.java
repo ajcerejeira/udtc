@@ -3,7 +3,9 @@ package View;
 import Model.Appointment;
 import Model.Notebook;
 
+import Utils.DateParser;
 import Utils.UI.*;
+import java.util.Optional;
 
 public class NotebookView implements Runnable {
     private Notebook notebook;
@@ -19,8 +21,8 @@ public class NotebookView implements Runnable {
                 new Title("Notebook", 1),
                 new Title("Add appointment", 2),
                 new Table(this.notebook.getAppointments().toArray()),
-                new Input("Date [dd-mm-yyyy]", text -> System.out.println()),
-                new Input("Appointment", appointment::setText),
+                new Input<>("Date [dd-mm-yyyy]", appointment::setDate, DateParser::parseDateTime2),
+                new Input<>("Appointment", appointment::setText, Optional::of),
         }).run();
 
         this.notebook.addAppointment(appointment);
