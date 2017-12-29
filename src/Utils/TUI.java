@@ -1,7 +1,6 @@
 package Utils;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -15,7 +14,7 @@ public class TUI {
     public static void title(String title, int level) {
         switch(level) {
             case 1:
-                System.out.println("\n\u001B[7m" + title.toUpperCase() + "\n\u001B[m");
+                System.out.println("\u001B[7m" + title.toUpperCase() + "\n\u001B[m");
                 break;
             case 2:
                 System.out.println("\u001B[1m" + title + "\n\u001B[m");
@@ -83,6 +82,18 @@ public class TUI {
         } catch (Exception e) {
             System.out.println("There was an error reading your option. Please try again\n");
             menu(options);
+        }
+    }
+
+    /**
+     *
+     * @param list
+     * @param show
+     * @param <T>
+     */
+    public static <T> void list(Iterable<T> list, Function<T, String> show) {
+        for (T e : list) {
+            System.out.println(show.apply(e));
         }
     }
 }

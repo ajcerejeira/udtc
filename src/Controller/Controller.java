@@ -23,7 +23,9 @@ public class Controller implements Runnable{
         while (true) {
             TUI.title("UDTC", 1);
             TUI.menu(new Utils.Option[] {
+                    new Option("A", "Age calculator", AgeView::home),
                     new Option("C", "Chronometer", () -> ChronometerView.home(this.chronometer)),
+                    new Option("N", "Notebook", () -> NotebookView.home(this.notebook)),
                     new Option("Q", "Quit", () -> System.exit(-1)),
             });
         }
