@@ -3,12 +3,13 @@ package Model;
 import java.time.LocalDate;
 import java.time.Period;
 
-public interface IAge {
+public interface IAgeCalculator {
+    static int age(LocalDate birthday) {
+        return Period.between(birthday, LocalDate.now()).getYears();
+    }
+
     static Period timeUntilAge(LocalDate birthday, int age) {
         int current_age = Period.between(birthday, LocalDate.now()).getYears();
-
-        System.out.println(current_age);
-        System.out.println(age);
 
         return timeUntilBirthday(birthday).plusYears(age - current_age - 1);
     }

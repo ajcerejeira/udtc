@@ -1,6 +1,6 @@
 package View;
 
-import Model.IAge;
+import Model.IAgeCalculator;
 import Utils.DateParser;
 import Utils.NumParser;
 import Utils.TUI;
@@ -10,12 +10,12 @@ import java.time.LocalDate;
 import java.time.Period;
 
 
-public class AgeView {
+public class AgeCalculatorView {
     public static void home() {
         TUI.title("Age calculator", 1);
         TUI.menu(new Option[] {
-                new Option("T1","Time until birthday", AgeView::birthday),
-                new Option("T2","Time until you're X years old", AgeView::timeUntilAge),
+                new Option("T1","Time until birthday", AgeCalculatorView::birthday),
+                new Option("T2","Time until you're X years old", AgeCalculatorView::timeUntilAge),
                 new Option("B", "Back", System.out::println)
         });
     }
@@ -24,7 +24,7 @@ public class AgeView {
         TUI.title("Age calculator", 1);
         TUI.title("Time until birthday", 2);
         LocalDate birthday = TUI.input("Birthday [yyyy-mm-dd]", DateParser::parseDate);
-        Period p = IAge.timeUntilBirthday(birthday);
+        Period p = IAgeCalculator.timeUntilBirthday(birthday);
 
         if (p.getDays() == 0) {
             System.out.println("Today is your birthday! Happy birthday!\n");
@@ -34,7 +34,7 @@ public class AgeView {
         }
 
         TUI.menu(new Option[] {
-                new Option("B", "Back", AgeView::home)
+                new Option("B", "Back", AgeCalculatorView::home)
         });
     }
 
@@ -44,7 +44,7 @@ public class AgeView {
 
         LocalDate birthday = TUI.input("Birthday date: [yyyy-mm-dd]", DateParser::parseDate);
         Integer age = TUI.input("How old do you want to be?", NumParser::parseInt);
-        Period timeLeft = IAge.timeUntilAge(birthday, age);
+        Period timeLeft = IAgeCalculator.timeUntilAge(birthday, age);
 
         System.out.println("You'll be " + age + " years old in "
                 + timeLeft.getYears() + " years "
@@ -52,7 +52,7 @@ public class AgeView {
                 + timeLeft.getDays() + " days");
 
         TUI.menu(new Option[] {
-                new Option("B", "Back", AgeView::home)
+                new Option("B", "Back", AgeCalculatorView::home)
         });
     }
 }

@@ -1,36 +1,26 @@
 package View;
 
-import Model.Calendar;
+import Model.ICalendar;
 import Utils.NumParser;
-import Utils.UI.*;
+import Utils.Option;
+import Utils.TUI;
 
-import static java.lang.System.out;
 
-public class CalendarView implements Runnable {
-    private Calendar calendar;
-
-    public CalendarView(Calendar calendar) {
-        this.calendar = calendar;
+public class CalendarView  {
+    public static void home(ICalendar calendar) {
+        TUI.title("Calendar", 1);
+        TUI.menu(new Option[] {
+                new Option("S", "Show calendar", () -> CalendarView.showCalendar(calendar))
+        });
     }
 
+    private static void showCalendar(ICalendar calendar) {
+        TUI.title("Calendar", 1);
+        TUI.title("Show calendar", 2);
 
-    @Override
-    public void run() {
-        new UI(new Runnable[] {
-                    new Title("Calendar", 1),
-                    new Menu(new Option[] {
-                            new Option("Show Calendar", this::printCalendar)
-                    }),
-            }).run();
-    }
+        calendar.setYear(TUI.input("Year", NumParser::parseInt));
+        calendar.setMonth(TUI.input("Month", NumParser::parseInt));
 
-    private void printCalendar() {
-        new UI(new Runnable[] {
-                new Title("Show Calendar", 1),
-
-                new Input<>("Year", this.calendar::setYear, NumParser::parseInt),
-                new Input<>("Month", this.calendar::setMonth, NumParser::parseInt)
-        }).run();
-        out.println(this.calendar.buildCalendar());
+        System.out.println(calendar.buildCalendar());
     }
 }

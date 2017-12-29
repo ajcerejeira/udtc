@@ -13,6 +13,7 @@ public class Calendar implements ICalendar{
         return day;
     }
 
+    @Override
     public void setMonth(int month) {
         this.month = month;
     }
@@ -21,6 +22,7 @@ public class Calendar implements ICalendar{
         return year;
     }
 
+    @Override
     public void setYear(int year) {
         this.year = year;
     }
