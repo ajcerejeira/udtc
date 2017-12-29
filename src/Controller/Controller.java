@@ -1,15 +1,18 @@
 package Controller;
 
 import Model.*;
-import Utils.UI.*;
+import Utils.Option;
 import View.*;
+import Utils.TUI;
 
 public class Controller implements Runnable{
+    private IChronometer chronometer;
     private Notebook notebook;
     private Travels travels;
     private Calendar calendar;
 
     public Controller() {
+        this.chronometer = new Chronometer();
         this.notebook = new Notebook();
         this.travels = new Travels();
         this.calendar = new Calendar();
@@ -17,6 +20,15 @@ public class Controller implements Runnable{
 
     @Override
     public void run(){
+        while (true) {
+            TUI.title("UDTC", 1);
+            TUI.menu(new Utils.Option[] {
+                    new Option("C", "Chronometer", () -> ChronometerView.home(this.chronometer)),
+                    new Option("Q", "Quit", () -> System.exit(-1)),
+            });
+        }
+
+        /*
         while (true) {
             new UI(new Runnable[] {
                     new Title("UDTC", 1),
@@ -30,6 +42,6 @@ public class Controller implements Runnable{
                             new Option("Q", "Quit", () -> System.exit(-1)),
                     }),
             }).run();
-        }
+        }*/
     }
 }

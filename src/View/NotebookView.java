@@ -5,6 +5,7 @@ import Model.Notebook;
 
 import Utils.DateParser;
 import Utils.UI.*;
+
 import java.util.Optional;
 
 public class NotebookView implements Runnable {

@@ -6,13 +6,13 @@ import Utils.DateParser;
 import Utils.Mutable;
 import Utils.NumParser;
 import Utils.Static;
+import Utils.UI.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.lang.System.out;
-import Utils.UI.*;
 
 public class TravelView implements Runnable{
     private Travels travels;

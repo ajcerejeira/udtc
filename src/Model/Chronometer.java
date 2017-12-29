@@ -1,67 +1,43 @@
 package Model;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Chronometer implements IChronometer {
-    private Thread thread = null;
     private LocalDateTime start;
     private LocalDateTime stop;
-    private LocalDateTime pause;
-    private LocalDateTime resume;
-    private Duration paused;
-    private Duration previousPause;
+    private Duration ellapsed;
 
-    public Chronometer(){
-        this.resume=LocalDateTime.MIN;
-        this.pause=LocalDateTime.MIN;
-        this.paused=Duration.ZERO;
-        this.previousPause=Duration.ZERO;
-    }
-
-    @Override
-    public void update() {
-        this.stop=LocalDateTime.now();
-    }
-
-    @Override
-    public void reset() {
-        this.resume=LocalDateTime.MIN;
-        this.pause=LocalDateTime.MIN;
-        this.paused=Duration.ZERO;
-        this.previousPause=Duration.ZERO;
-    }
-
-    @Override
-    public void pause() {
-        this.pause=LocalDateTime.now();
-    }
-
-    @Override
-    public void resume() {
-        this.resume=LocalDateTime.now();
-        previousPause=Duration.between(pause,resume);
-        paused=paused.plus(previousPause);
-    }
-
-    @Override
-    public Duration getRuntime() {
-        return Duration.between(start,stop).minus(paused);
+    public Chronometer() {
+        this.start = LocalDateTime.now();
+        this.stop = LocalDateTime.now();
+        this.ellapsed = Duration.ZERO;
     }
 
     @Override
     public void start() {
-        this.start=LocalDateTime.now();
-        thread = new Thread(() -> {
-            while(true){
-                update();
-            }
-        });
-        thread.start();
+        this.start = LocalDateTime.now();
     }
 
     @Override
-    public void stop() {
-        thread.interrupt();
-        this.stop=LocalDateTime.now();
+    public Duration stop() {
+        this.stop = LocalDateTime.now();
+        Duration ellapsed = Duration.between(this.start, this.stop).plus(this.ellapsed);
+        this.ellapsed = Duration.ZERO;
+
+        return ellapsed;
+    }
+
+    @Override
+    public Duration pause() {
+        this.stop = LocalDateTime.now();
+        this.ellapsed = Duration.between(this.start, this.stop).plus(this.ellapsed);
+
+        return this.ellapsed;
+    }
+
+    @Override
+    public void resume() {
+        this.start = LocalDateTime.now();
     }
 }

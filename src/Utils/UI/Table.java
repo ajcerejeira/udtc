@@ -7,11 +7,10 @@ public class Table<T> implements Runnable {
     private List<T> rows;
     private Function<T, String> show;
 
-
     public Table(List<T> rows, Function<T, String> show) {
         this.rows = rows;
         this.show = show;
-        System.out.println(this.rows.size());
+        System.out.println("Ola");
     }
 
     @Override
