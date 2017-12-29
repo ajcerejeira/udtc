@@ -2,9 +2,7 @@ package View;
 
 import Model.Calendar;
 import Utils.NumParser;
-import Utils.UI.Input;
-import Utils.UI.Title;
-import Utils.UI.UI;
+import Utils.UI.*;
 import static java.lang.System.out;
 
 public class CalendarView implements Runnable {

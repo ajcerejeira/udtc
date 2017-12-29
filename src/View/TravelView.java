@@ -1,8 +1,5 @@
 package View;
 
-import Exceptions.InvalidDateException;
-import Exceptions.InvalidInputException;
-import Exceptions.ReturnException;
 import Model.Travel;
 import Model.Travels;
 import Utils.DateParser;
@@ -11,10 +8,8 @@ import Utils.NumParser;
 import Utils.Static;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Scanner;
 
 import static java.lang.System.out;
 import Utils.UI.*;
@@ -61,7 +56,7 @@ public class TravelView implements Runnable{
 
                 new Input<>("Origin", t::setOrigin, Optional::of),
                 new Input<>("Destination", t::setDestination, Optional::of),
-                new Input<>("Departure date (YYYY-MM-DD hh:mm:ss)", t::setDepartureDate, DateParser::parseDateTime2),
+                new Input<>("Departure date (YYYY-MM-DD hh:mm:ss)", t::setDepartureDate, DateParser::parseDateTime),
                 new Input<>("Duration\n Hours", h -> t.setDuration(t.getDuration().plusHours(h)), NumParser::parseInt),
                 new Input<>(" Minutes", m -> t.setDuration(t.getDuration().plusMinutes(m)), NumParser::parseInt),
                 new Input<>("Cost", t::setCost, NumParser::parseDouble),
@@ -140,8 +135,8 @@ public class TravelView implements Runnable{
 
         new UI(new Runnable[] {
                 new Title("Travels between Dates", 1),
-                new Input<>("First Date (YYYY-MM-DD hh:mm:ss)", d1::set, DateParser::parseDateTime2),
-                new Input<>("Second Date (YYYY-MM-DD hh:mm:ss)", d2::set, DateParser::parseDateTime2),
+                new Input<>("First Date (YYYY-MM-DD hh:mm:ss)", d1::set, DateParser::parseDateTime),
+                new Input<>("Second Date (YYYY-MM-DD hh:mm:ss)", d2::set, DateParser::parseDateTime),
                 new IndexedTable(this.travels.travelsBetweenDates(d1.get(), d2.get()).size() - 1, this.travels.travelsBetweenDates(d1.get(), d2.get()).toArray())
 
         }).run();

@@ -60,9 +60,7 @@ public class Travel {
         long hours = this.duration.toHours();
         int minutes = (int) ((this.duration.getSeconds() % (60 * 60)) / 60);
 
-        ZonedDateTime arrival = departure.withZoneSameInstant(arrivingZone).plusHours(hours).plusMinutes(minutes);
-
-        return arrival;
+        return departure.withZoneSameInstant(arrivingZone).plusHours(hours).plusMinutes(minutes);
     }
 
     public double getCost() {
@@ -90,7 +88,7 @@ public class Travel {
     }
 
     public boolean isValid(){
-        return this.getOrigin()!="" && this.getDestination()!="" && this.getDuration()!=null && this.getDepartureDate()!=null;
+        return !Objects.equals(this.getOrigin(), "") && !Objects.equals(this.getDestination(), "") && this.getDuration()!=null && this.getDepartureDate()!=null;
     }
 
 

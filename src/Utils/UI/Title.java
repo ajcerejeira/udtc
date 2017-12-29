@@ -24,7 +24,7 @@ public class Title implements Runnable {
                 System.out.println("\u001B[1m" + this.text + "\n\u001B[m");
                 break;
             case 3:
-                System.out.println("\n" + this.text.toUpperCase());
+                System.out.println(this.text.toUpperCase() + "\n");
                 break;
             default:
                 System.out.println(this.text);

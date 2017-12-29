@@ -10,12 +10,6 @@ public class Input<T> implements Runnable {
     private Consumer<T> action;
     private Function<String, Optional<T>> validator;
 
-    public Input(String text, Consumer<T> action) {
-        this.text = text;
-        this.action = action;
-     //   this.validator = Optional::of;
-    }
-
     public Input(String text, Consumer<T> action, Function<String, Optional<T>> validator) {
         this.text = text;
         this.action = action;
@@ -24,7 +18,7 @@ public class Input<T> implements Runnable {
 
     @Override
     public void run() {
-        System.out.print(this.text + " ");
+        System.out.print(this.text + ": ");
         Scanner sc = new Scanner(System.in);
 
         try {
@@ -34,7 +28,8 @@ public class Input<T> implements Runnable {
             if (o.isPresent()) {
                 this.action.accept(o.get());
             } else {
-                System.out.println("The");
+                System.out.println("The input value is invalid. Please try again:");
+                this.run();
             }
         } catch (Exception e) {
             System.out.println("There was an error reading the input");

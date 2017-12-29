@@ -20,8 +20,8 @@ public class NotebookView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
                 new Title("Add appointment", 2),
-                new Table(this.notebook.getAppointments().toArray()),
-                new Input<>("Date [dd-mm-yyyy]", appointment::setDate, DateParser::parseDateTime2),
+                new Table<>(this.notebook.getAppointments(), Appointment::toString),
+                new Input<>("Date [dd-mm-yyyy]", appointment::setDate, DateParser::parseDateTime),
                 new Input<>("Appointment", appointment::setText, Optional::of),
         }).run();
 
@@ -33,7 +33,7 @@ public class NotebookView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
                 new Title("Edit appointment",2),
-                new Table(this.notebook.getAppointments().toArray()),
+                new Table<>(this.notebook.getAppointments(), Appointment::toString),
         }).run();
 
         this.run();
@@ -43,7 +43,7 @@ public class NotebookView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
                 new Title("Delete appointment",2),
-                new Table(this.notebook.getAppointments().toArray()),
+                new Table<>(this.notebook.getAppointments(), Appointment::toString),
         }).run();
 
         this.run();
@@ -53,7 +53,7 @@ public class NotebookView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
                 new Title("Search appointment",2),
-                new Table(this.notebook.getAppointments().toArray()),
+                new Table<>(this.notebook.getAppointments(), Appointment::toString),
         }).run();
 
         this.run();
@@ -63,7 +63,7 @@ public class NotebookView implements Runnable {
     public void run() {
         new UI(new Runnable[] {
                 new Title("Notebook", 1),
-                new Table(this.notebook.getAppointments().toArray()),
+                new Table<>(this.notebook.getAppointments(), Appointment::toString),
                 new Menu(new Option[] {
                         new Option("A", "Add appointment", this::addAppointment),
                         new Option("E", "Edit appointment", this::editAppointment),

@@ -1,5 +1,7 @@
 package Utils.UI;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -13,6 +15,8 @@ public class Menu implements Runnable {
 
     @Override
     public void run() {
+        System.out.println();
+
         for (Option option : this.options) {
             System.out.println(" " + option);
         }

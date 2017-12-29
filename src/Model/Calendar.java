@@ -30,8 +30,7 @@ public class Calendar implements ICalendar{
         int y = getYear() - (14 - getMonth()) / 12;
         int x = y + y/4 - y/100 + y/400;
         int m = getMonth() + 12 * ((14 - getMonth()) / 12) - 2;
-        int d = (getDay() + x + (31*m)/12) % 7;
-        return d;
+        return (getDay() + x + (31*m)/12) % 7;
     }
 
     @Override

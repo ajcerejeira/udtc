@@ -21,7 +21,7 @@ public class Travels implements ITravels {
     }
 
     public Travels(Travels record){
-        this.record = new ArrayList<Travel>();
+        this.record = new ArrayList<>();
     }
 
     @Override

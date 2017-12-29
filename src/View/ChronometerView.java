@@ -4,10 +4,10 @@ import Model.Chronometer;
 import Utils.UI.*;
 import Utils.Static;
 
-public class ChronoView implements Runnable {
+public class ChronometerView implements Runnable {
     private Chronometer chronometer;
 
-    public ChronoView(Chronometer chronometer) {
+    public ChronometerView(Chronometer chronometer) {
         this.chronometer = chronometer;
     }
 
@@ -30,14 +30,12 @@ public class ChronoView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Chronometer", 1),
                 new Title("Chronometer has stopped...", 2),
-                new Title("Elapsed time: " + Static.prettyChrono(this.chronometer.getRuntime()), 2),
+                new Title("Elapsed time: " + Static.prettyChrono(this.chronometer.getRuntime()), 3),
+                chronometer::reset,
                 new Menu(new Option[] {
                         new Option("B", "Back", this),
                 })
         }).run();
-
-        chronometer.reset();
-        this.run();
     }
 
     private void pause() {
@@ -46,14 +44,17 @@ public class ChronoView implements Runnable {
         new UI(new Runnable[] {
                 new Title("Chronometer", 1),
                 new Title("Chronometer has been paused...", 2),
+                new Title("Elapsed time: " + Static.prettyChrono(this.chronometer.getRuntime()), 3),
                 new Menu(new Option[] {
                         new Option("R", "Resume", this::resume),
+                        new Option("S", "Stop", this::stop),
                 }),
         }).run();
     }
 
     private void resume() {
         chronometer.resume();
+
         new UI(new Runnable[] {
                 new Title("Chronometer", 1),
                 new Title("Chronometer has been resumed...", 2),
