@@ -14,9 +14,22 @@ public class AgeCalculatorView {
     public static void home() {
         TUI.title("Age calculator", 1);
         TUI.menu(new Option[] {
+                new Option("A", "Age", AgeCalculatorView::age),
                 new Option("T1","Time until birthday", AgeCalculatorView::birthday),
                 new Option("T2","Time until you're X years old", AgeCalculatorView::timeUntilAge),
                 new Option("B", "Back", System.out::println)
+        });
+    }
+
+    private static void age() {
+        TUI.title("Age calculator", 1);
+        TUI.title("Age", 2);
+        LocalDate birthday = TUI.input("Birthday [yyyy-mm-dd]", DateParser::parseDate);
+
+        System.out.println("You are " + IAgeCalculator.age(birthday) + " years old.");
+
+        TUI.menu(new Option[] {
+                new Option("B", "Back", AgeCalculatorView::home)
         });
     }
 

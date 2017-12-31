@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Appointment implements Comparable {
@@ -50,7 +51,6 @@ public class Appointment implements Comparable {
 
     @Override
     public String toString() {
-        // TODO format date to a more legible format
-        return "[" + this.date + "] " + this.text;
+        return "[" + this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")) + "] " + this.text;
     }
 }

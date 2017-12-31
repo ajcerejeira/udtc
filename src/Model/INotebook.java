@@ -9,4 +9,7 @@ public interface INotebook {
 
     List<Appointment> getAppointments();
     List<Appointment> getAppointments(LocalDateTime date);
+
+    int read(String s);
+    String toString();
 }

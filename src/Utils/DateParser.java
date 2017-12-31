@@ -9,13 +9,22 @@ import java.util.Optional;
 public class DateParser {
 
     public static Optional<LocalDateTime> parseDateTime(String input) {
-        LocalDateTime date;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime date = null;
+        String[] patterns = new String[] {
+                "yyyy-MM-dd HH:mm:ss",
+                "yyyy-MM-dd HH:mm",
+                "yyyy-MM-dd HH",
+        };
 
-        try {
-            date = LocalDateTime.parse(input, formatter);
-        } catch(DateTimeParseException e) {
-            date = null;
+        for (String pattern : patterns) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+            try {
+                date = LocalDateTime.parse(input, formatter);
+                break;
+            } catch(DateTimeParseException e) {
+                date = null;
+            }
         }
 
         return Optional.ofNullable(date);
@@ -33,5 +42,4 @@ public class DateParser {
 
         return Optional.ofNullable(date);
     }
-
 }

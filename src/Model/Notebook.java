@@ -1,10 +1,11 @@
 package Model;
 
+import Utils.DateParser;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Notebook implements INotebook {
@@ -35,5 +36,33 @@ public class Notebook implements INotebook {
                 .stream()
                 .filter(appointment -> appointment.getDate().equals(date))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int read(String s) {
+        Pattern p = Pattern.compile("^\\[(.*?)\\] (.*?)$", Pattern.MULTILINE);
+        Matcher m = p.matcher(s);
+        int n = 0;
+
+        while (m.find()) {
+            LocalDateTime date = DateParser.parseDateTime(m.group(1)).orElse(LocalDateTime.now());
+            String text = m.group(2);
+            this.appointments.add(new Appointment(date, text));
+            n++;
+        }
+
+        return n;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder build = new StringBuilder();
+
+        for (Appointment appointment : this.appointments) {
+            build.append(appointment.toString());
+            build.append('\n');
+        }
+
+        return build.toString();
     }
 }
