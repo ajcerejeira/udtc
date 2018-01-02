@@ -1,13 +1,22 @@
 package View;
 
 import Model.IChronometer;
-import Utils.Static;
 import Utils.Option;
 import Utils.UI;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.function.Function;
 
 public class ChronometerView {
+    private static Function<Duration, String> durationToString = (d) -> {
+        long hours = d.getSeconds() / 3600;
+        long minutes = (d.getSeconds() % 3600) / 60;
+        long seconds = d.getSeconds();
+
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+    };
+
     public static void home(IChronometer chronometer) {
         UI.title("Chronometer");
         UI.menu(new Option("Start", () -> start(chronometer)),
@@ -28,7 +37,7 @@ public class ChronometerView {
 
         UI.title("Chronometer");
         UI.subtitle("Chronometer has stopped...");
-        UI.subtitle("Elapsed time: " + Static.prettyChrono(runtime));
+        UI.subtitle("Elapsed time: " + durationToString.apply(runtime));
 
         UI.menu(new Option("Back", () -> home(chronometer)));
     }
@@ -38,7 +47,7 @@ public class ChronometerView {
 
         UI.title("Chronometer");
         UI.subtitle("Chronometer has been paused...");
-        UI.subtitle("Elapsed time: " + Static.prettyChrono(runtime));
+        UI.subtitle("Elapsed time: " + durationToString.apply(runtime));
         UI.menu(new Option("Resume", () -> resume(chronometer)),
                 new Option("Stop", () -> stop(chronometer)));
     }

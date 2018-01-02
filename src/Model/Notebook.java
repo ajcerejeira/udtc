@@ -39,6 +39,14 @@ public class Notebook implements INotebook {
     }
 
     @Override
+    public List<Appointment> getAppointments(LocalDateTime from, LocalDateTime to) {
+        return this.appointments
+                .stream()
+                .filter(appointment -> appointment.getDate().isAfter(from) && appointment.getDate().isBefore(to))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int read(String s) {
         Pattern p = Pattern.compile("^\\[(.*?)\\] (.*?)$", Pattern.MULTILINE);
         Matcher m = p.matcher(s);

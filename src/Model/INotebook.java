@@ -9,6 +9,7 @@ public interface INotebook {
 
     List<Appointment> getAppointments();
     List<Appointment> getAppointments(LocalDateTime date);
+    List<Appointment> getAppointments(LocalDateTime from, LocalDateTime to);
 
     int read(String s);
     String toString();

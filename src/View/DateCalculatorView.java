@@ -17,6 +17,8 @@ public class DateCalculatorView {
                 new Option("Subtract from date", DateCalculatorView::subFromDate),
                 new Option("Difference between two dates", DateCalculatorView::differenceBetweenDates),
                 new Option("Week number and day of a date", DateCalculatorView::week),
+                new Option("Weekend list", DateCalculatorView::weekends),
+                new Option("Weekdays list", DateCalculatorView::weekdays),
                 new Option("Back", System.out::println));
     }
 
@@ -68,6 +70,28 @@ public class DateCalculatorView {
         int weekNumber = IDateCalculator.week(date);
 
         System.out.println(dayOfWeek + ", week" + weekNumber);
+        UI.menu(new Option("Back", DateCalculatorView::home));
+    }
+
+    private static void weekends() {
+        UI.title("Date calculator");
+        UI.subtitle("Weekends list");
+        LocalDate from = UI.input("From", Parsers::parseDate);
+        LocalDate to = UI.input("To", Parsers::parseDate);
+
+        System.out.println("Weekends between " + from + " and " + to);
+        UI.list(IDateCalculator.weekends(from, to), d -> d + " " + d.getDayOfWeek());
+        UI.menu(new Option("Back", DateCalculatorView::home));
+    }
+
+    private static void weekdays() {
+        UI.title("Date calculator");
+        UI.subtitle("Weekdays list");
+        LocalDate from = UI.input("From", Parsers::parseDate);
+        LocalDate to = UI.input("To", Parsers::parseDate);
+
+        System.out.println("Weekdays between " + from + " and " + to);
+        UI.list(IDateCalculator.weekdays(from, to), d -> d + " " + d.getDayOfWeek());
         UI.menu(new Option("Back", DateCalculatorView::home));
     }
 }

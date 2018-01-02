@@ -20,6 +20,7 @@ public class NotebookView {
         UI.list(notebook.getAppointments(), Appointment::toString);
         UI.menu(new Option("Add appointment", () -> NotebookView.addAppointment(notebook)),
                 new Option("Delete appointment", () -> NotebookView.deleteAppointment(notebook)),
+                new Option("Search appointment", () -> NotebookView.searchAppointment(notebook)),
                 new Option("Save notebook", () -> NotebookView.saveNotebook(notebook)),
                 new Option("Read notebook", () -> NotebookView.readNotebook(notebook)),
                 new Option("Back", System.out::println));
@@ -50,6 +51,17 @@ public class NotebookView {
         UI.menu(options);
 
         home(notebook);
+    }
+
+    public static void searchAppointment(INotebook notebook) {
+        UI.title("Notebook");
+        UI.subtitle("Search appointment.");
+        UI.list(notebook.getAppointments(), Appointment::toString);
+        LocalDateTime from = UI.input("From", Parsers::parseDateTime);
+        LocalDateTime to = UI.input("To", Parsers::parseDateTime);
+
+        System.out.println("Appointments between " + from + " and " + to);
+        UI.list(notebook.getAppointments(from, to), Appointment::toString);
     }
 
     private static void readNotebook(INotebook notebook) {
