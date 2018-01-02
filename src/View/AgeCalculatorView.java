@@ -1,9 +1,8 @@
 package View;
 
 import Model.IAgeCalculator;
-import Utils.DateParser;
-import Utils.NumParser;
-import Utils.TUI;
+import Utils.Parsers;
+import Utils.UI;
 import Utils.Option;
 
 import java.time.LocalDate;
@@ -12,31 +11,27 @@ import java.time.Period;
 
 public class AgeCalculatorView {
     public static void home() {
-        TUI.title("Age calculator", 1);
-        TUI.menu(new Option[] {
-                new Option("A", "Age", AgeCalculatorView::age),
-                new Option("T1","Time until birthday", AgeCalculatorView::birthday),
-                new Option("T2","Time until you're X years old", AgeCalculatorView::timeUntilAge),
-                new Option("B", "Back", System.out::println)
-        });
+        UI.title("Age calculator");
+        UI.menu(new Option("Age", AgeCalculatorView::age),
+                new Option("Time until birthday", AgeCalculatorView::birthday),
+                new Option("Time until you're X years old", AgeCalculatorView::timeUntilAge),
+                new Option("Back", System.out::println));
     }
 
     private static void age() {
-        TUI.title("Age calculator", 1);
-        TUI.title("Age", 2);
-        LocalDate birthday = TUI.input("Birthday [yyyy-mm-dd]", DateParser::parseDate);
+        UI.title("Age calculator");
+        UI.subtitle("Age");
+        LocalDate birthday = UI.input("Birthday [yyyy-mm-dd]", Parsers::parseDate);
 
         System.out.println("You are " + IAgeCalculator.age(birthday) + " years old.");
 
-        TUI.menu(new Option[] {
-                new Option("B", "Back", AgeCalculatorView::home)
-        });
+        UI.menu(new Option("Back", AgeCalculatorView::home));
     }
 
     private static void birthday() {
-        TUI.title("Age calculator", 1);
-        TUI.title("Time until birthday", 2);
-        LocalDate birthday = TUI.input("Birthday [yyyy-mm-dd]", DateParser::parseDate);
+        UI.title("Age calculator");
+        UI.subtitle("Time until birthday");
+        LocalDate birthday = UI.input("Birthday [yyyy-mm-dd]", Parsers::parseDate);
         Period p = IAgeCalculator.timeUntilBirthday(birthday);
 
         if (p.getDays() == 0) {
@@ -46,17 +41,15 @@ public class AgeCalculatorView {
             System.out.println(p.getYears() + " year(s), " + p.getMonths() + " month(s), " + p.getDays() + " day(s)");
         }
 
-        TUI.menu(new Option[] {
-                new Option("B", "Back", AgeCalculatorView::home)
-        });
+        UI.menu(new Option("Back", AgeCalculatorView::home));
     }
 
     private static void timeUntilAge() {
-        TUI.title("Age calculator", 1);
-        TUI.title("Time until X years old", 2);
+        UI.title("Age calculator");
+        UI.subtitle("Time until X years old");
 
-        LocalDate birthday = TUI.input("Birthday date: [yyyy-mm-dd]", DateParser::parseDate);
-        Integer age = TUI.input("How old do you want to be?", NumParser::parseInt);
+        LocalDate birthday = UI.input("Birthday date: [yyyy-mm-dd]", Parsers::parseDate);
+        Integer age = UI.input("How old do you want to be?", Parsers::parseInt);
         Period timeLeft = IAgeCalculator.timeUntilAge(birthday, age);
 
         System.out.println("You'll be " + age + " years old in "
@@ -64,8 +57,6 @@ public class AgeCalculatorView {
                 + timeLeft.getMonths() + " months and "
                 + timeLeft.getDays() + " days");
 
-        TUI.menu(new Option[] {
-                new Option("B", "Back", AgeCalculatorView::home)
-        });
+        UI.menu(new Option("Back", AgeCalculatorView::home));
     }
 }

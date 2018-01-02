@@ -1,25 +1,23 @@
 package View;
 
 import Model.ICalendar;
-import Utils.NumParser;
 import Utils.Option;
-import Utils.TUI;
+import Utils.Parsers;
+import Utils.UI;
 
 
 public class CalendarView  {
     public static void home(ICalendar calendar) {
-        TUI.title("Calendar", 1);
-        TUI.menu(new Option[] {
-                new Option("S", "Show calendar", () -> CalendarView.showCalendar(calendar))
-        });
+        UI.title("Calendar");
+        UI.menu(new Option("Show calendar", () -> CalendarView.showCalendar(calendar)));
     }
 
     private static void showCalendar(ICalendar calendar) {
-        TUI.title("Calendar", 1);
-        TUI.title("Show calendar", 2);
+        UI.title("Calendar");
+        UI.subtitle("Show calendar");
 
-        calendar.setYear(TUI.input("Year", NumParser::parseInt));
-        calendar.setMonth(TUI.input("Month", NumParser::parseInt));
+        calendar.setYear(UI.input("Year", Parsers::parseInt));
+        calendar.setMonth(UI.input("Month", Parsers::parseInt));
 
         System.out.println(calendar.buildCalendar());
     }

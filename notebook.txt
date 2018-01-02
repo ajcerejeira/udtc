@@ -1,0 +1,5 @@
+[2018-01-03 02:00] Aula de dúvidas de CSI
+[2018-01-04 02:00] Teste de CSI
+[2018-01-05 12:00] Entrega de PSDJ
+[2018-01-08 08:00] Aniversário do pai
+[2018-01-11 12:00] Teste de EM

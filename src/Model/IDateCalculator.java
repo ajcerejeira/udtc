@@ -1,16 +1,45 @@
 package Model;
 
-import Utils.Static;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAmount;
 
 public interface IDateCalculator {
+    static LocalDate addToDate(LocalDate date, TemporalAmount ammount) {
+        return date.plus(ammount);
+    }
+
+    static LocalDate addToDate(LocalDate date, int years, int months, int weeks, int days) {
+        return date.plus(Period.of(years, months, days).plus(Period.ofWeeks(weeks)));
+    }
+
+    static LocalDate subFromDate(LocalDate date, TemporalAmount ammount) {
+        return date.minus(ammount);
+    }
+
+    static LocalDate subFromDate(LocalDate date, int years, int months, int weeks, int days) {
+        return date.minus(Period.of(years, months, days).plus(Period.ofWeeks(weeks)));
+    }
+
+    static Period differenceBetweenDates(LocalDate d1, LocalDate d2) {
+        if (d1.isBefore(d2)) {
+            return Period.between(d1, d2);
+        } else {
+            return Period.between(d2, d1);
+        }
+    }
+
+    static DayOfWeek dayOfWeek(LocalDate date) {
+        return date.getDayOfWeek();
+    }
+
+    static int week(LocalDate date) {
+        return date.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+    }
+
+    /*
     static Period differenceBetweenDates(LocalDate d1, LocalDate d2) {
         return Period.between(d1,d2);
     }
@@ -34,5 +63,5 @@ public interface IDateCalculator {
 
     static List<LocalDate> weekends(LocalDate d1, LocalDate d2) {
         return streamInterval(d1,d2).filter(IDateCalculator::isWeekend).collect(Collectors.toList());
-    }
+    }*/
 }

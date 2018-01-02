@@ -3,51 +3,59 @@ package View;
 import Model.Appointment;
 import Model.INotebook;
 
-import Utils.DateParser;
 import Utils.Option;
-import Utils.TUI;
+import Utils.Parsers;
+import Utils.UI;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
-
 
 public class NotebookView {
     public static void home(INotebook notebook) {
-        TUI.title("Notebook", 1);
-        TUI.list(notebook.getAppointments(), Appointment::toString);
-        TUI.menu(new Option[] {
-                new Option("A", "Add appointment", () -> NotebookView.addAppointment(notebook)),
-                new Option("S", "Save notebook", () -> NotebookView.saveNotebook(notebook)),
-                new Option("R", "Read notebook", () -> NotebookView.readNotebook(notebook)),
-                new Option("B", "Back", System.out::println),
-           /*     new Option("E", "Edit appointment", this::editAppointment),
-                new Option("D", "Delete appointment", this::deleteAppointment),
-                new Option("S", "Search", this::searchAppointment),
-                new Option("B", "Back", System.out::println)*/
-        });
+        UI.title("Notebook");
+        UI.list(notebook.getAppointments(), Appointment::toString);
+        UI.menu(new Option("Add appointment", () -> NotebookView.addAppointment(notebook)),
+                new Option("Delete appointment", () -> NotebookView.deleteAppointment(notebook)),
+                new Option("Save notebook", () -> NotebookView.saveNotebook(notebook)),
+                new Option("Read notebook", () -> NotebookView.readNotebook(notebook)),
+                new Option("Back", System.out::println));
     }
 
     private static void addAppointment(INotebook notebook) {
-        TUI.title("Notebook", 1);
-        TUI.title("Add appointment", 2);
-        TUI.list(notebook.getAppointments(), Appointment::toString);
+        UI.title("Notebook");
+        UI.subtitle("Add appointment");
+        UI.list(notebook.getAppointments(), Appointment::toString);
 
-        LocalDateTime dateTime = TUI.input("Date [yyyy-mm-dd hh:mm]", DateParser::parseDateTime);
-        String text = TUI.input("Appointment", Optional::of);
+        LocalDateTime dateTime = UI.input("Date [yyyy-mm-dd hh:mm]", Parsers::parseDateTime);
+        String text = UI.input("Appointment", Optional::of);
 
         notebook.addAppointment(new Appointment(dateTime, text));
 
         home(notebook);
     }
 
+    private static void deleteAppointment(INotebook notebook) {
+        List<Appointment> appointments = notebook.getAppointments();
+        Option[] options = notebook.getAppointments()
+                .stream()
+                .map(appointment -> new Option(appointment.toString(), () -> notebook.deleteAppointment(appointment)))
+                .toArray(Option[]::new);
+
+        UI.title("Notebook");
+        UI.subtitle("Delete appointment");
+        UI.menu(options);
+
+        home(notebook);
+    }
+
     private static void readNotebook(INotebook notebook) {
-        TUI.title("Notebook", 1);
-        TUI.title("Read notebook", 2);
-        String path = TUI.input("Input file", Optional::of);
+        UI.title("Notebook");
+        UI.subtitle("Read notebook");
+        String path = UI.input("Input file", Optional::of);
 
         try {
             String content = new String(Files.readAllBytes(Paths.get(path)));
@@ -60,9 +68,9 @@ public class NotebookView {
     }
 
     private static void saveNotebook(INotebook notebook) {
-        TUI.title("Notebook", 1);
-        TUI.title("Save notebook", 2);
-        String path = TUI.input("Output file", Optional::of);
+        UI.title("Notebook");
+        UI.subtitle("Save notebook");
+        String path = UI.input("Output file", Optional::of);
 
         try {
             Files.write(Paths.get(path), notebook.toString().getBytes());

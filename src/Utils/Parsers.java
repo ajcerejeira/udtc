@@ -2,11 +2,35 @@ package Utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-public class DateParser {
+public class Parsers {
+    public static Optional<Integer> parseInt(String s) {
+        Integer i;
+
+        try {
+            i = Integer.valueOf(s);
+        } catch (Exception e) {
+            i = null;
+        }
+
+        return Optional.ofNullable(i);
+    }
+
+    public static Optional<Double> parseDouble(String s) {
+        Double d;
+
+        try {
+            d = Double.valueOf(s);
+        } catch (Exception e) {
+            d = null;
+        }
+
+        return Optional.ofNullable(d);
+    }
 
     public static Optional<LocalDateTime> parseDateTime(String input) {
         LocalDateTime date = null;
@@ -41,5 +65,9 @@ public class DateParser {
         }
 
         return Optional.ofNullable(date);
+    }
+
+    public static Optional<ZoneId> parseZoneId(String id) {
+        return Optional.ofNullable(ZoneId.of(id));
     }
 }
