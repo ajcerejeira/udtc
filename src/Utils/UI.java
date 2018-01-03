@@ -26,7 +26,11 @@ public class UI {
         Optional<T> result = Optional.empty();
         Scanner sc = new Scanner(System.in);
 
-        while (!result.isPresent()) {
+        for (int i = 0; !result.isPresent(); i++) {
+            if (i != 0) {
+                System.out.println("The introduced value is not valid. Please try again.");
+            }
+
             String line = sc.nextLine();
             result = parser.apply(line);
         }
@@ -34,7 +38,6 @@ public class UI {
         return result.get();
     }
 
-    @SafeVarargs
     public static void menu(Option ... options) {
         // Print the menu
         System.out.println();

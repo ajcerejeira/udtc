@@ -8,11 +8,7 @@ import java.util.TreeMap;
 
 public interface IWorldClock {
     static Duration difference(ZoneId id1, ZoneId id2) {
-        LocalDateTime d1 = now(id1);
-        LocalDateTime d2 = now(id2);
-        Duration diff = Duration.between(d1, d2);
-
-        return diff;
+        return Duration.between(now(id1), now(id2));
     }
 
     static LocalDateTime now(ZoneId id) {

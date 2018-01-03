@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public interface IDateCalculator {
-    static LocalDate addToDate(LocalDate date, TemporalAmount ammount) {
+    static LocalDate add(LocalDate date, TemporalAmount ammount) {
         return date.plus(ammount);
     }
 
-    static LocalDate addToDate(LocalDate date, int years, int months, int weeks, int days) {
+    static LocalDate add(LocalDate date, int years, int months, int weeks, int days) {
         return date.plus(Period.of(years, months, days).plus(Period.ofWeeks(weeks)));
     }
 
-    static LocalDate subFromDate(LocalDate date, TemporalAmount ammount) {
+    static LocalDate sub(LocalDate date, TemporalAmount ammount) {
         return date.minus(ammount);
     }
 
-    static LocalDate subFromDate(LocalDate date, int years, int months, int weeks, int days) {
+    static LocalDate sub(LocalDate date, int years, int months, int weeks, int days) {
         return date.minus(Period.of(years, months, days).plus(Period.ofWeeks(weeks)));
     }
 
-    static Period differenceBetweenDates(LocalDate d1, LocalDate d2) {
+    static Period difference(LocalDate d1, LocalDate d2) {
         if (d1.isBefore(d2)) {
             return Period.between(d1, d2);
         } else {

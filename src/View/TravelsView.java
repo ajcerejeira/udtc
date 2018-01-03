@@ -1,30 +1,87 @@
 package View;
-/*
-import Model.Travel;
-import Model.Travels;
-import Utils.DateParser;
-import Utils.NumParser;
-import Utils.Static;
-import Utils.UI.*;
 
+import Model.ITravels;
+import Model.Travel;
+import Utils.Option;
+import Utils.Parsers;
+import Utils.UI;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static java.lang.System.out;
-
-public class TravelView implements Runnable{
-    private Travels travels;
-
-    public TravelView(Travels travels) {
-        this.travels = travels;
-        travels.addTravel(new Travel("Portugal","Iran", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 400.0));
-        travels.addTravel(new Travel("America/Indianapolis","America/Virgin", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 500.0));
-        travels.addTravel(new Travel("Canada/Atlantic","Canada/Newfoundland", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 600.0));
-        travels.addTravel(new Travel("Brazil/East","Portugal", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 0.0));
-        travels.addTravel(new Travel("Africa/Luanda","Asia/Jerusalem", Duration.ZERO, LocalDateTime.of(2017,12,1,14,0,0) , 400.0));
+public class TravelsView {
+    public static void home(ITravels travels) {
+        UI.title("Travels");
+        UI.list(travels.getTravels(), Travel::toString);
+        UI.menu(new Option("Add travel", () -> TravelsView.add(travels)),
+                new Option("Remove travel", () -> TravelsView.remove(travels)),
+                new Option("Save travels", () -> TravelsView.save(travels)),
+                new Option("Read travels", () -> TravelsView.read(travels)),
+                new Option("Back", System.out::println));
     }
 
+    private static void add(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Add travel");
+
+        String origin = UI.input("Origin", Optional::of);
+        String destination = UI.input("Destination", Optional::of);
+        Duration duration = UI.input("Duration [hh:mm]", Parsers::parseDuration);
+        LocalDateTime departure = UI.input("Departure date [yyyy-md-dd hh:mm]", Parsers::parseDateTime);
+        double cost = UI.input("Cost", Parsers::parseDouble);
+
+        travels.addTravel(new Travel(origin, destination, duration, departure, cost));
+
+        home(travels);
+    }
+
+    private static void remove(ITravels travels) {
+        Option[] options = travels.getTravels()
+                .stream()
+                .map(travel -> new Option(travel.toString(), () -> travels.removeTravel(travel)))
+                .toArray(Option[]::new);
+        UI.title("Travels");
+        UI.subtitle("Remove travel");
+        UI.menu(options);
+
+        home(travels);
+    }
+
+    private static void save(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Save travels");
+        String path = UI.input("Output file", Optional::of);
+
+        try {
+            Files.write(Paths.get(path), travels.toString().getBytes());
+        } catch (IOException e) {
+            System.out.println("There was an error writing to the specified file");
+        }
+
+        home(travels);
+    }
+
+    private static void read(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Read travels");
+        String path = UI.input("Input file", Optional::of);
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(path)));
+            travels.read(content);
+        } catch (IOException e) {
+            System.out.println("There was an error reading the specified file");
+        }
+
+        home(travels);
+    }
+}
+
+/*
     @Override
     public void run() {
         new UI(new Runnable[] {
@@ -44,28 +101,6 @@ public class TravelView implements Runnable{
                         new Option("Back", out::println),
                 })
         }).run();
-    }
-
-    private void add() {
-        Travel t = new Travel();
-
-        new UI(new Runnable[] {
-                new Title("Travels", 1),
-                new Title("Add travel", 2),
-
-                new Input<>("Origin", t::setOrigin, Optional::of),
-                new Input<>("Destination", t::setDestination, Optional::of),
-                new Input<>("Departure date (YYYY-MM-DD hh:mm:ss)", t::setDepartureDate, DateParser::parseDateTime),
-                new Input<>("Duration\n Hours", h -> t.setDuration(t.getDuration().plusHours(h)), NumParser::parseInt),
-                new Input<>(" Minutes", m -> t.setDuration(t.getDuration().plusMinutes(m)), NumParser::parseInt),
-                new Input<>("Cost", t::setCost, NumParser::parseDouble),
-        }).run();
-
-        if(t.isValid())
-            this.travels.addTravel(t);
-        else
-            out.println("\nInvalid data");
-        this.run();
     }
 
     private void remove() {

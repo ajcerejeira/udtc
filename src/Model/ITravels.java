@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ITravels {
     void addTravel(Travel t);
-    void removeTravel(int n);
+    void removeTravel(Travel t);
     List<Travel> getTravels();
     List<Travel> cheapestTravels();
     List<Travel> mostExpensiveTravels();
@@ -15,5 +15,8 @@ public interface ITravels {
     List<Travel> travelsBetweenDates(LocalDateTime d1, LocalDateTime d2);
     Duration timeUntilNextTravel();
     Duration timeUntilLastTravel();
+
+    int read(String s);
+    String toString();
     Travels clone();
 }

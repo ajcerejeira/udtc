@@ -40,7 +40,6 @@ public class NotebookView {
     }
 
     private static void deleteAppointment(INotebook notebook) {
-        List<Appointment> appointments = notebook.getAppointments();
         Option[] options = notebook.getAppointments()
                 .stream()
                 .map(appointment -> new Option(appointment.toString(), () -> notebook.deleteAppointment(appointment)))
@@ -53,7 +52,7 @@ public class NotebookView {
         home(notebook);
     }
 
-    public static void searchAppointment(INotebook notebook) {
+    private static void searchAppointment(INotebook notebook) {
         UI.title("Notebook");
         UI.subtitle("Search appointment.");
         UI.list(notebook.getAppointments(), Appointment::toString);

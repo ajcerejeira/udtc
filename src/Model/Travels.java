@@ -1,16 +1,19 @@
 package Model;
 
+import Utils.Parsers;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Travels implements ITravels {
     private List<Travel> record;
-    private int n;
 
     public Travels() {
         this.record = new ArrayList<>();
@@ -30,8 +33,8 @@ public class Travels implements ITravels {
     }
 
     @Override
-    public void removeTravel(int n) {
-        this.record.remove(n);
+    public void removeTravel(Travel t) {
+        this.record.remove(t);
     }
 
     @Override
@@ -75,15 +78,44 @@ public class Travels implements ITravels {
     }
 
     @Override
+    public int read(String s) {
+        Pattern p = Pattern.compile("^\\[(.*?)\\] (.*?) - (.*?) \\((.*?)\\) (.*?)$", Pattern.MULTILINE);
+        Matcher m = p.matcher(s);
+        int n = 0;
+
+        try {
+            while (m.find()) {
+                LocalDateTime date = Parsers.parseDateTime(m.group(1)).orElse(LocalDateTime.now());
+                String from = m.group(2);
+                String to = m.group(3);
+                Duration duration = Parsers.parseDuration(m.group(4)).orElse(Duration.ZERO);
+                double cost = Parsers.parseDouble(m.group(4)).orElse(0.0);
+
+                this.record.add(new Travel(from, to, duration, date, cost));
+                n++;
+            }
+        } catch (Exception e) {
+            n = -1;
+        }
+
+        return n;
+    }
+
+    @Override
     public Travels clone() {
         return new Travels(this);
     }
 
     @Override
     public String toString() {
-        return "Travels{" +
-                "record=" + record +
-                '}';
+        StringBuilder build = new StringBuilder();
+
+        for (Travel travel : this.record) {
+            build.append(travel.toString());
+            build.append('\n');
+        }
+
+        return build.toString();
     }
 
     @Override

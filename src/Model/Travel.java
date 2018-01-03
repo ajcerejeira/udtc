@@ -1,7 +1,9 @@
 package Model;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class Travel {
     private String origin;
@@ -11,11 +13,11 @@ public class Travel {
     private double cost;
 
     public Travel() {
-        this.origin = null;
-        this.destination = null;
+        this.origin = "";
+        this.destination = "";
         this.duration = Duration.ZERO;
-        this.departureDate = null;
-        this.cost = 0;
+        this.departureDate = LocalDateTime.now();
+        this.cost = 0.0;
     }
 
     public Travel(String origin, String destination, Duration duration, LocalDateTime departureDate, double cost) {
@@ -87,20 +89,18 @@ public class Travel {
         this.cost = cost;
     }
 
-    public boolean isValid(){
-        return !Objects.equals(this.getOrigin(), "") && !Objects.equals(this.getDestination(), "") && this.getDuration()!=null && this.getDepartureDate()!=null;
-    }
-
-
     @Override
     public String toString() {
-        return "Travel{" +
-                "origin='" + origin + '\'' +
-                ", destination='" + destination + '\'' +
-                ", duration=" + duration +
-                ", departureDate=" + departureDate +
-                ", cost=" + cost +
-                '}';
+        Function<Duration, String> durationToString = (d) -> {
+            long hours = d.getSeconds() / 3600;
+            long minutes = (d.getSeconds() % 3600) / 60;
+
+            return String.format("%d:%02d", hours, minutes);
+        };
+
+        return "[" + this.departureDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")) + "] "
+                + this.origin + " - " + this.destination + " "
+                + "(" + durationToString.apply(this.duration) + ") " + this.cost + "€";
     }
 
     @Override

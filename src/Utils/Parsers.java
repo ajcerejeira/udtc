@@ -1,11 +1,15 @@
 package Utils;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Parsers {
     public static Optional<Integer> parseInt(String s) {
@@ -67,7 +71,35 @@ public class Parsers {
         return Optional.ofNullable(date);
     }
 
-    public static Optional<ZoneId> parseZoneId(String id) {
-        return Optional.ofNullable(ZoneId.of(id));
+    public static Optional<Duration> parseDuration(String input) {
+        Pattern p = Pattern.compile("(\\d+):(\\d+)");
+        Matcher m = p.matcher(input);
+        Duration duration;
+
+        try {
+            if (m.find()) {
+                int hours = Integer.valueOf(m.group(1));
+                int minutes = Integer.valueOf(m.group(2));
+                duration = Duration.ofMinutes(hours * 60 + minutes);
+            } else {
+                duration = null;
+            }
+        } catch (Exception e) {
+            duration = null;
+        }
+
+        return Optional.ofNullable(duration);
+    }
+
+    public static Optional<ZoneId> parseZoneId(String input) {
+        ZoneId id;
+
+        try {
+            id = ZoneId.of(input);
+        } catch(Exception e) {
+            id = null;
+        }
+
+        return Optional.ofNullable(id);
     }
 }

@@ -52,11 +52,15 @@ public class Notebook implements INotebook {
         Matcher m = p.matcher(s);
         int n = 0;
 
-        while (m.find()) {
-            LocalDateTime date = Parsers.parseDateTime(m.group(1)).orElse(LocalDateTime.now());
-            String text = m.group(2);
-            this.appointments.add(new Appointment(date, text));
-            n++;
+        try {
+            while (m.find()) {
+                LocalDateTime date = Parsers.parseDateTime(m.group(1)).orElse(LocalDateTime.now());
+                String text = m.group(2);
+                this.appointments.add(new Appointment(date, text));
+                n++;
+            }
+        } catch (Exception e) {
+            n = -1;
         }
 
         return n;
