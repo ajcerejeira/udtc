@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 public class Chronometer implements IChronometer {
     private LocalDateTime start;
     private LocalDateTime stop;
-    private Duration ellapsed;
+    private Duration elapsed;
 
     public Chronometer() {
         this.start = LocalDateTime.now();
         this.stop = LocalDateTime.now();
-        this.ellapsed = Duration.ZERO;
+        this.elapsed = Duration.ZERO;
     }
 
     @Override
@@ -22,18 +22,18 @@ public class Chronometer implements IChronometer {
     @Override
     public Duration stop() {
         this.stop = LocalDateTime.now();
-        Duration ellapsed = Duration.between(this.start, this.stop).plus(this.ellapsed);
-        this.ellapsed = Duration.ZERO;
+        Duration elapsed = Duration.between(this.start, this.stop).plus(this.elapsed);
+        this.elapsed = Duration.ZERO;
 
-        return ellapsed;
+        return elapsed;
     }
 
     @Override
     public Duration pause() {
         this.stop = LocalDateTime.now();
-        this.ellapsed = Duration.between(this.start, this.stop).plus(this.ellapsed);
+        this.elapsed = Duration.between(this.start, this.stop).plus(this.elapsed);
 
-        return this.ellapsed;
+        return this.elapsed;
     }
 
     @Override

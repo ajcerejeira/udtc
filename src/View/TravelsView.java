@@ -87,8 +87,6 @@ public class TravelsView {
         new UI(new Runnable[] {
                 new Title("Travels", 1),
                 new Menu(new Option[] {
-                        new Option("Add travel", this::add),
-                        new Option("Remove travel", this::remove),
                         new Option("Check time at arrival", this::arrivalTime),
                         new Option("L1","List available travels", this::listAll),
                         new Option("L2","List cheapest travels", this::listCheapest),
@@ -101,15 +99,6 @@ public class TravelsView {
                         new Option("Back", out::println),
                 })
         }).run();
-    }
-
-    private void remove() {
-        new UI(new Runnable[] {
-                new Title("Available travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.getTravels().toArray()),
-                new Input<>("\nTravel to remove?\n>>>", n -> this.travels.removeTravel(n - 1), NumParser::parseInt),
-        }).run();
-        this.run();
     }
 
     private void arrivalTime() {
