@@ -89,7 +89,6 @@ public class Travels implements ITravels {
                 String from = m.group(2);
                 String to = m.group(3);
                 Duration duration = Parsers.parseDuration(m.group(4)).orElse(Duration.ZERO);
-                System.out.println(m.group(5));
                 double cost = Parsers.parseDouble(m.group(5)).orElse(0.0);
 
                 this.record.add(new Travel(from, to, duration, date, cost));

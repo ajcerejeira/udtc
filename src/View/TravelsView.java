@@ -5,20 +5,40 @@ import Model.Travel;
 import Utils.Option;
 import Utils.Parsers;
 import Utils.UI;
+import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class TravelsView {
+    private static Function<Duration, String> durationToString = (d) -> {
+        long hours = d.getSeconds() / 3600;
+        long minutes = (d.getSeconds() % 3600) / 60;
+        long seconds = d.getSeconds();
+
+        return String.format("%d:%02d:%02d", hours, minutes, seconds);
+    };
+
     public static void home(ITravels travels) {
         UI.title("Travels");
-        UI.menu(new Option("Show travels", () -> TravelsView.show(travels)),
+        UI.menu(new Option("Show all travels", () -> TravelsView.show(travels)),
                 new Option("Add travel", () -> TravelsView.add(travels)),
                 new Option("Remove travel", () -> TravelsView.remove(travels)),
+                new Option("Travels between dates", () -> TravelsView.between(travels)),
+                new Option("Next travel", () -> TravelsView.next(travels)),
+                new Option("Last travel", () -> TravelsView.last(travels)),
+                new Option("Check time at arrival", () -> TravelsView.checkTimeAtArrival(travels)),
+                new Option("Cheapest travels", () -> TravelsView.cheapest(travels)),
+                new Option("Most expensive travels", () -> TravelsView.mostExpensive(travels)),
+                new Option("Shortest travels", () -> TravelsView.shortest(travels)),
+                new Option("Longest travels", () -> TravelsView.longest(travels)),
                 new Option("Save travels", () -> TravelsView.save(travels)),
                 new Option("Read travels", () -> TravelsView.read(travels)),
                 new Option("Back", System.out::println));
@@ -64,6 +84,84 @@ public class TravelsView {
         home(travels);
     }
 
+    private static void between(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Travels between");
+        LocalDateTime from = UI.input("From [yyyy-mm-dd hh:mm]", Parsers::parseDateTime);
+        LocalDateTime to = UI.input("To [yyyy-mm-dd hh:mm]", Parsers::parseDateTime);
+        UI.list(travels.travelsBetweenDates(from, to), Travel::toString);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void next(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Next travel");
+        UI.paragraph("Next travel is due in " + durationToString.apply(travels.timeUntilNextTravel()));
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void last(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Last travel");
+        UI.paragraph("Last travel is due in" + durationToString.apply(travels.timeUntilLastTravel()));
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void checkTimeAtArrival(ITravels travels) {
+        if (travels.getTravels().size() == 0) {
+            UI.paragraph("There are no travels to check.");
+            UI.menu(new Option("Back", () -> TravelsView.home(travels)));
+            return;
+        }
+
+        Option[] options = travels.getTravels().stream()
+                .map(travel -> new Option(travel.toString(),
+                        () -> System.out.println("Arrives at " + travel.getTimeAtArrival().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")))))
+                .toArray(Option[]::new);
+
+        UI.title("Travels");
+        UI.subtitle("Check time at arrival");
+        UI.paragraph("Select a travel to check its time at arrival");
+        UI.menu(options);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void cheapest(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Chepeast travels");
+        List<Travel> t = travels.cheapestTravels();
+        int n = UI.input("Number of travels [0-" + t.size() + "]", Parsers::parseInt);
+        UI.list(t.subList(0, n), Travel::toString);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void mostExpensive(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Most expensive travels");
+        List<Travel> t = travels.mostExpensiveTravels();
+        int n = UI.input("Number of travels [0-" + t.size() + "]", Parsers::parseInt);
+        UI.list(t.subList(0, n), Travel::toString);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void shortest(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Shortest travels");
+        List<Travel> t = travels.shortestTravels();
+        int n = UI.input("Number of travels [0-" + t.size() + "]", Parsers::parseInt);
+        UI.list(t.subList(0, n), Travel::toString);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
+    private static void longest(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Longest travels");
+        List<Travel> t = travels.longestTravels();
+        int n = UI.input("Number of travels [0-" + t.size() + "]", Parsers::parseInt);
+        UI.list(t.subList(0, n), Travel::toString);
+        UI.menu(new Option("Back", () -> home(travels)));
+    }
+
     private static void save(ITravels travels) {
         UI.title("Travels");
         UI.subtitle("Save travels");
@@ -93,105 +191,3 @@ public class TravelsView {
         home(travels);
     }
 }
-
-/*
-    @Override
-    public void run() {
-        new UI(new Runnable[] {
-                new Title("Travels", 1),
-                new Menu(new Option[] {
-                        new Option("Check time at arrival", this::arrivalTime),
-                        new Option("L1","List available travels", this::listAll),
-                        new Option("L2","List cheapest travels", this::listCheapest),
-                        new Option("L3","List most expensive travels", this::listMostExpensive),
-                        new Option("L4","List shortest travels", this::listShortest),
-                        new Option("L5","List longest travels", this::listLongest),
-                        new Option("L6","List travels between two dates", this::listBetweenDates),
-                        new Option("T1","Time until next travel", this::listNext),
-                        new Option("T2","Time until last travel", this::listLast),
-                        new Option("Back", out::println),
-                })
-        }).run();
-    }
-
-    private void arrivalTime() {
-        new UI(new Runnable[]{
-                new Title("All booked Travels", 1),
-                new IndexedTable(this.travels.getTravels().size() - 1, this.travels.getTravels().toArray()),
-                new Input<>("\nTravel to remove?\n>>>",
-                        n -> out.println(this.travels.getTravels().get(n - 1).getTimeAtArrival().format(Static.dtf)),
-                        NumParser::parseInt),
-        }).run();
-        this.run();
-    }
-
-    private void listAll() {
-        new UI(new Runnable[] {
-                new Title("All booked Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.getTravels().toArray()),
-        }).run();
-        this.run();
-    }
-
-    private void listCheapest() {
-        new UI(new Runnable[] {
-                new Title("Cheapest Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.cheapestTravels().toArray())
-        }).run();
-        this.run();
-    }
-
-    private void listMostExpensive() {
-        new UI(new Runnable[] {
-                new Title("Most expensive Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.mostExpensiveTravels().toArray())
-        }).run();
-        this.run();
-    }
-
-    private void listShortest(){
-        new UI(new Runnable[] {
-                new Title("Shortest Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.shortestTravels().toArray())
-        }).run();
-        this.run();
-    }
-
-    private void listLongest(){
-        new UI(new Runnable[] {
-                new Title("Longest Travels", 1),
-                new IndexedTable(this.travels.getTravels().size()-1,this.travels.longestTravels().toArray())
-        }).run();
-        this.run();
-    }
-
-    private void listBetweenDates() {
-        Mutable<LocalDateTime> d1 = new Mutable<>(LocalDateTime.now());
-        Mutable<LocalDateTime> d2 = new Mutable<>(LocalDateTime.now());
-
-        new UI(new Runnable[] {
-                new Title("Travels between Dates", 1),
-                new Input<>("First Date (YYYY-MM-DD hh:mm:ss)", d1::set, DateParser::parseDateTime),
-                new Input<>("Second Date (YYYY-MM-DD hh:mm:ss)", d2::set, DateParser::parseDateTime),
-                new IndexedTable(this.travels.travelsBetweenDates(d1.get(), d2.get()).size() - 1, this.travels.travelsBetweenDates(d1.get(), d2.get()).toArray())
-
-        }).run();
-        this.run();
-    }
-
-    private void listNext() {
-        new UI(new Runnable[] {
-                new Title("Next travel", 1),
-                new Title("Next travel is due in " + Static.prettyChrono(this.travels.timeUntilNextTravel()),2),
-        }).run();
-        this.run();
-    }
-
-    private void listLast() {
-        new UI(new Runnable[] {
-                new Title("Last travel", 1),
-                new Title("Last travel is due in " + Static.prettyChrono(this.travels.timeUntilLastTravel()),2),
-        }).run();
-        this.run();
-    }
-}*/
