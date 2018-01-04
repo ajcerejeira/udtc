@@ -16,12 +16,19 @@ import java.util.Optional;
 public class TravelsView {
     public static void home(ITravels travels) {
         UI.title("Travels");
-        UI.list(travels.getTravels(), Travel::toString);
-        UI.menu(new Option("Add travel", () -> TravelsView.add(travels)),
+        UI.menu(new Option("Show travels", () -> TravelsView.show(travels)),
+                new Option("Add travel", () -> TravelsView.add(travels)),
                 new Option("Remove travel", () -> TravelsView.remove(travels)),
                 new Option("Save travels", () -> TravelsView.save(travels)),
                 new Option("Read travels", () -> TravelsView.read(travels)),
                 new Option("Back", System.out::println));
+    }
+
+    private static void show(ITravels travels) {
+        UI.title("Travels");
+        UI.subtitle("Show travels");
+        UI.list(travels.getTravels(), Travel::toString);
+        UI.menu(new Option("Back", () -> TravelsView.home(travels)));
     }
 
     private static void add(ITravels travels) {
@@ -40,6 +47,12 @@ public class TravelsView {
     }
 
     private static void remove(ITravels travels) {
+        if (travels.getTravels().size() == 0) {
+            UI.paragraph("There are no travels to remove.");
+            UI.menu(new Option("Back", () -> TravelsView.home(travels)));
+            return;
+        }
+
         Option[] options = travels.getTravels()
                 .stream()
                 .map(travel -> new Option(travel.toString(), () -> travels.removeTravel(travel)))

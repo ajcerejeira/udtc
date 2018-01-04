@@ -1,14 +1,22 @@
 package Model;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public interface IWorldClock {
     static Duration difference(ZoneId id1, ZoneId id2) {
         return Duration.between(now(id1), now(id2));
+    }
+
+    static List<String> zonesAtTime(LocalDateTime t) {
+        final LocalDateTime time = t.withNano(0).withSecond(0);
+        List<String> zones = ZoneId.getAvailableZoneIds()
+                .stream()
+                .filter(id -> now(ZoneId.of(id)).withNano(0).withSecond(0).equals(time))
+                .collect(Collectors.toList());
+        return zones;
     }
 
     static LocalDateTime now(ZoneId id) {

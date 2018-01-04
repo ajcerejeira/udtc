@@ -26,7 +26,7 @@ public class DateCalculatorView {
         UI.title("Date calculator");
         UI.subtitle("Add to date");
 
-        LocalDate date = UI.input("Date", Parsers::parseDate);
+        LocalDate date = UI.input("Date [yyyy-mm-dd]", Parsers::parseDate);
         int years = UI.input("Years", Parsers::parseInt);
         int months = UI.input("Months", Parsers::parseInt);
         int weeks = UI.input("Weeks", Parsers::parseInt);
@@ -40,7 +40,7 @@ public class DateCalculatorView {
         UI.title("Date calculator");
         UI.subtitle("Subtract from date");
 
-        LocalDate date = UI.input("Date", Parsers::parseDate);
+        LocalDate date = UI.input("Date [yyyy-mm-dd]", Parsers::parseDate);
         int years = UI.input("Years", Parsers::parseInt);
         int months = UI.input("Months", Parsers::parseInt);
         int weeks = UI.input("Weeks", Parsers::parseInt);
@@ -54,8 +54,8 @@ public class DateCalculatorView {
         UI.title("Date calculator");
         UI.subtitle("Difference between dates");
 
-        LocalDate d1 = UI.input("Date 1", Parsers::parseDate);
-        LocalDate d2 = UI.input("Date 2", Parsers::parseDate);
+        LocalDate d1 = UI.input("Date 1 [yyyy-mm-dd]", Parsers::parseDate);
+        LocalDate d2 = UI.input("Date 2 [yyyy-mm-dd]", Parsers::parseDate);
         Period p = IDateCalculator.difference(d1, d2);
 
         System.out.println("Difference:");
@@ -67,19 +67,19 @@ public class DateCalculatorView {
     private static void week() {
         UI.title("Date calculator");
         UI.subtitle("Week number and day of a date");
-        LocalDate date = UI.input("Date", Parsers::parseDate);
+        LocalDate date = UI.input("Date [yyyy-mm-dd]", Parsers::parseDate);
         DayOfWeek dayOfWeek = IDateCalculator.dayOfWeek(date);
         int weekNumber = IDateCalculator.week(date);
 
-        System.out.println(dayOfWeek + ", week" + weekNumber);
+        System.out.println(dayOfWeek + ", week " + weekNumber);
         UI.menu(new Option("Back", DateCalculatorView::home));
     }
 
     private static void weekends() {
         UI.title("Date calculator");
         UI.subtitle("Weekends list");
-        LocalDate from = UI.input("From", Parsers::parseDate);
-        LocalDate to = UI.input("To", Parsers::parseDate);
+        LocalDate from = UI.input("From [yyyy-mm-dd]", Parsers::parseDate);
+        LocalDate to = UI.input("To [yyyy-mm-dd]", Parsers::parseDate);
 
         System.out.println("Weekends between " + from + " and " + to);
         UI.list(IDateCalculator.weekends(from, to), d -> d + " " + d.getDayOfWeek());
@@ -89,8 +89,8 @@ public class DateCalculatorView {
     private static void weekdays() {
         UI.title("Date calculator");
         UI.subtitle("Weekdays list");
-        LocalDate from = UI.input("From", Parsers::parseDate);
-        LocalDate to = UI.input("To", Parsers::parseDate);
+        LocalDate from = UI.input("From [yyyy-mm-dd]", Parsers::parseDate);
+        LocalDate to = UI.input("To [yyyy-mm-dd]", Parsers::parseDate);
 
         System.out.println("Weekdays between " + from + " and " + to);
         UI.list(IDateCalculator.weekdays(from, to), d -> d + " " + d.getDayOfWeek());

@@ -3,10 +3,22 @@ package Model;
 import java.time.Duration;
 
 /**
+ * This interface sets the core functionality of a simple chronometer. It has only four possible actions: start, stop,
+ * pause and resume.
  *
- * A chronometer only has four possible actions: start, stop, pause, and resume.
- * This interface is abstract enough so that its implementations can vary in design.
+ * This interface is abstract enough so that its implementations can vary in design (
  *
+ * <pre>
+ *     <code>
+ *         public static void run(IChronometer chronometer) {
+ *             chronometer.start();
+ *             System.out.println("Start");
+ *
+ *             Duration d = chronometer.stop();
+ *             System.out.println("Stop. Elapsed time:" + d);
+ *         }
+ *     </code>
+ * </pre>
  * @author Octavio Maia
  */
 public interface IChronometer {
@@ -30,7 +42,7 @@ public interface IChronometer {
     Duration pause();
 
     /**
-     *
+     * Resumes the chronometer.
      */
     void resume();
 }
