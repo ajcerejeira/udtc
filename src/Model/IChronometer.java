@@ -6,8 +6,9 @@ import java.time.Duration;
  * This interface sets the core functionality of a simple chronometer. It has only four possible actions: start, stop,
  * pause and resume.
  *
- * This interface is abstract enough so that its implementations can vary in design (
+ * This interface is abstract enough so that its implementations can vary in design.
  *
+ * One simple example of its usage could be like this:
  * <pre>
  *     <code>
  *         public static void run(IChronometer chronometer) {
