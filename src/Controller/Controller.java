@@ -28,7 +28,7 @@ public class Controller implements Runnable{
                     new Option("Chronometer", () -> ChronometerView.home(this.chronometer)),
                     new Option("Date calculator", DateCalculatorView::home),
                     new Option("Notebook", () -> NotebookView.home(this.notebook)),
-                    new Option("Time calculator", TimeCalculatorView::home),
+//                    new Option("Time calculator", TimeCalculatorView::home),
                     new Option("Travels", () -> TravelsView.home(this.travels)),
                     new Option("World clock", WorldClockView::home),
                     new Option("Quit", () -> System.exit(-1))

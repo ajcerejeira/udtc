@@ -34,7 +34,7 @@ public class AgeCalculatorView {
         LocalDate birthday = UI.input("Birthday [yyyy-mm-dd]", Parsers::parseDate);
         Period p = IAgeCalculator.timeUntilBirthday(birthday);
 
-        if (p.getDays() == 0) {
+        if (p.isZero()) {
             System.out.println("Today is your birthday! Happy birthday!\n");
         } else {
             System.out.println("Time until your next birthday:");

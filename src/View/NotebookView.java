@@ -17,10 +17,10 @@ import java.util.Optional;
 public class NotebookView {
     public static void home(INotebook notebook) {
         UI.title("Notebook");
-        UI.list(notebook.getAppointments(), Appointment::toString);
         UI.menu(new Option("Add appointment", () -> NotebookView.addAppointment(notebook)),
                 new Option("Delete appointment", () -> NotebookView.deleteAppointment(notebook)),
                 new Option("Search appointment", () -> NotebookView.searchAppointment(notebook)),
+                new Option("Show appointments", () -> NotebookView.showAppointments(notebook)),
                 new Option("Save notebook", () -> NotebookView.saveNotebook(notebook)),
                 new Option("Read notebook", () -> NotebookView.readNotebook(notebook)),
                 new Option("Back", System.out::println));
@@ -29,7 +29,6 @@ public class NotebookView {
     private static void addAppointment(INotebook notebook) {
         UI.title("Notebook");
         UI.subtitle("Add appointment");
-        UI.list(notebook.getAppointments(), Appointment::toString);
 
         LocalDateTime dateTime = UI.input("Date [yyyy-mm-dd hh:mm]", Parsers::parseDateTime);
         String text = UI.input("Appointment", Optional::of);
@@ -54,13 +53,21 @@ public class NotebookView {
 
     private static void searchAppointment(INotebook notebook) {
         UI.title("Notebook");
-        UI.subtitle("Search appointment.");
-        UI.list(notebook.getAppointments(), Appointment::toString);
+        UI.subtitle("Search appointments");
         LocalDateTime from = UI.input("From", Parsers::parseDateTime);
         LocalDateTime to = UI.input("To", Parsers::parseDateTime);
 
         System.out.println("Appointments between " + from + " and " + to);
         UI.list(notebook.getAppointments(from, to), Appointment::toString);
+        UI.menu(new Option("Back", () -> home(notebook)));
+
+    }
+
+    private static void showAppointments(INotebook notebook) {
+        UI.title("Notebook");
+        UI.subtitle("View appointments.");
+        UI.list(notebook.getAppointments(), Appointment::toString);
+        UI.menu(new Option("Back", () -> home(notebook)));
     }
 
     private static void readNotebook(INotebook notebook) {

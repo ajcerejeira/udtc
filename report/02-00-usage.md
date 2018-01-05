@@ -1,5 +1,16 @@
 # Utilização
 
+#### Obtenção do programa
+
+O executável deste programa pode ser descarregado a partir desta ligação:
+
+<https://github.com/ajcerejeira/udtc/raw/master/udtc.jar>
+
+Também pode descarregar o todo o conteudo do projeto através do `git`:
+
+    git clone https://github.com/ajcerejeira/udtc
+    cd udtc/
+
 #### Execução e compilação
 
 Na pasta raíz do projecto encontra-se o ficheiro `udtc.jar` pronto a ser
