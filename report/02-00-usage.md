@@ -1,19 +1,23 @@
 # Utilização
 
+#### Execução e compilação
 
-#### Execução e inicialização
+Na pasta raíz do projecto encontra-se o ficheiro `udtc.jar` pronto a ser
+executado. Deste modo, para iniciar o programa basta correr o seguinte comando
+na raíz do projeto:
 
-Antes de executar o programa é necessário compilá-lo. O seu código-fonte
-(escrito em `JAVA8`) encontra-se na pasta `src` e pode ser compilado recorrendo
-à ferramenta `javac` ou então, através de um ambiente de desenvolvimento
-integrado que suporte `JAVA`.
+    $ java -jar udtc.jar
+
+Pode também compilar o programa se assim o desejar. O seu código-fonte
+encontra-se na pasta `src` e pode ser compilado recorrendo à ferramenta `javac`
+ou então, através de um ambiente de desenvolvimento integrado que suporte
+`JAVA`.
 
 Após o programa se encontrar compilado, e encontrando-se na directoria onde se
-encontra o executável, basta correr o comando:
+encontram os resultados da compilação, basta correr o seguinte comando para
+iniciar a aplicação:
 
-    java Main
-
-Para iniciar a aplicação.
+    $ java Main
 
 ![Menu inicial do programa](img/00-initial.png)
 
