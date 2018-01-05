@@ -28,7 +28,7 @@ public class UI {
 
         for (int i = 0; !result.isPresent(); i++) {
             if (i != 0) {
-                System.out.println("The introduced value is not valid. Please try again.");
+                System.out.println("\u001B[31m" + "The introduced value is not valid. Please try again." + "\u001B[m");
             }
 
             String line = sc.nextLine();
@@ -52,7 +52,7 @@ public class UI {
 
         for (int i = 0; !(option >= 0 && option < options.length); i++) {
             if (i != 0) {
-                System.out.println("The chosen option is not valid. Please try again.");
+                System.out.println("\u001B[31m" + "The chosen option is not valid. Please try again." + "\u001B[m");
             }
 
             System.out.println();

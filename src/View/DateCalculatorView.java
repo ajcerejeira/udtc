@@ -59,8 +59,7 @@ public class DateCalculatorView {
         Period p = IDateCalculator.difference(d1, d2);
 
         System.out.println("Difference:");
-        System.out.println(p.getYears() + " year(s), " + p.getMonths() + " month(s), " + p.get(ChronoUnit.WEEKS)
-                + " week(s)" +  p.getDays() + " day(s)." );
+        System.out.println(p.getYears() + " year(s), " + p.getMonths() + " month(s), " +  p.getDays() + " day(s)." );
         UI.menu(new Option("Back", DateCalculatorView::home));
     }
 

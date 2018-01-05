@@ -4,6 +4,22 @@
 
 O modo de gestão de viagens inclui várias ferramentas de conveniência para o
 cálculo de estimativas de duração de viagens, cálculo de tempos de chegada,
+etc...
+
+
+![Lista de viagens](img/07-travels-show.png)
+
+![Inserção de uma viagem](img/07-travels-add.png)
+
+![Remoção de uma viagem](img/07-travels-remove.png)
+
+![Lista de viagens entre duas datas](img/07-travels-between.png)
+
+![Tempo de chegada de uma viagem](img/07-travels-arrival.png)
+
+![Viagens mais baratas](img/07-travels-cheapest.png)
+
+![Viagens mais longas](img/07-travels-longest.png)
 
 
 #### Serialização

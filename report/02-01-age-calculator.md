@@ -1,6 +1,6 @@
 ## Calculadora de idades
 
-![](img/01-age-calculator-time-until-age.png)
+![Menu inicial da calculadora de idades](img/01-age-calculator.png)
 
 A calculadora de idades permite efetuar algumas operações relacionadas com
 datas de aniversário, permitindo calcular uma determinada idade, quanto tempo
